@@ -59,7 +59,7 @@ const mockAccommodations: Accommodation[] = [
     priceType: "month",
     rating: 4.2,
     reviewCount: 89,
-    image: "https://images.unsplash.com/photo-1555854877-bab0e460b3d5?w=400&h=300&fit=crop",
+    image: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=400&h=300&fit=crop",
     amenities: ["Wi-Fi", "AC", "24/7", "Meals"],
     availability: "limited",
     description: "Modern hostel facility with all amenities for comfortable stay. Safe and secure environment for students.",
@@ -70,8 +70,8 @@ const mockAccommodations: Accommodation[] = [
     },
     rules: ["No visitors after 10 PM", "Maintain cleanliness", "Respect quiet hours"],
     photos: [
-      "https://images.unsplash.com/photo-1555854877-bab0e460b3d5?w=800&h=600&fit=crop",
-      "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800&h=600&fit=crop"
+      "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800&h=600&fit=crop"
     ]
   },
   {
@@ -125,30 +125,31 @@ const mockAccommodations: Accommodation[] = [
     ]
   },
   {
-    id: "5",
-    title: "Shared Room - Male Students",
-    type: "room",
-    location: "Campus View",
-    distance: "1.5 km",
-    price: 8000,
-    priceType: "month",
-    rating: 4.0,
-    reviewCount: 67,
-    image: "https://images.unsplash.com/photo-1499954110024-1171a6186445?w=400&h=300&fit=crop",
-    amenities: ["Wi-Fi", "Shared", "Study Room"],
-    availability: "limited",
-    description: "Shared accommodation for male students with study facilities. Budget-friendly option near campus.",
-    contact: {
-      phone: "+91 98765 43214",
-      email: "sharedroom@example.com",
-      owner: "Amit Singh"
-    },
-    rules: ["Male students only", "Shared responsibility", "Study hours respected"],
-    photos: [
-      "https://images.unsplash.com/photo-1499954110024-1171a6186445?w=800&h=600&fit=crop",
-      "https://images.unsplash.com/photo-1631889993959-41b4e9c6e3c5?w=800&h=600&fit=crop"
-    ]
+  id: "5",
+  title: "Shared Room - Male Students",
+  type: "room",
+  location: "Campus View",
+  distance: "1.5 km",
+  price: 8000,
+  priceType: "month",
+  rating: 4.0,
+  reviewCount: 67,
+  image: "https://images.unsplash.com/photo-1621891337421-af0e6b355e2f?w=1170&fit=crop",
+  amenities: ["Wi-Fi", "Shared", "Study Room"],
+  availability: "limited",
+  description: "Shared accommodation for male students with study facilities. Budget-friendly option near campus.",
+  contact: {
+    phone: "+91 98765 43214",
+    email: "sharedroom@example.com",
+    owner: "Amit Singh"
   },
+  rules: ["Male students only", "Shared responsibility", "Study hours respected"],
+  photos: [
+    "https://images.unsplash.com/photo-1621891337421-af0e6b355e2f?w=1170&fit=crop",
+    "https://images.unsplash.com/photo-1621891337421-af0e6b355e2f?w=1170&fit=crop"
+  ]
+},
+
   {
     id: "6",
     title: "Premium Girls Hostel",

@@ -92,8 +92,8 @@ const Footer = () => {
               <div className="flex items-start space-x-2">
                 <MapPin className="h-4 w-4 text-muted-foreground mt-0.5" />
                 <span className="text-muted-foreground">
-                  123 Education Hub,<br />
-                  Bangalore, Karnataka 560001
+                  ICV Polytechnic,<br />
+                  Sevayatan, Jhargram 721514
                 </span>
               </div>
             </div>
@@ -103,7 +103,7 @@ const Footer = () => {
         {/* Bottom Section */}
         <div className="border-t border-border mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
           <p className="text-muted-foreground text-sm">
-            © 2024 CampusHub. All rights reserved.
+            © 2025 CampusHub. All rights reserved.
           </p>
           <div className="flex space-x-6 mt-4 md:mt-0">
             <a href="#" className="text-muted-foreground hover:text-primary text-sm transition-colors">

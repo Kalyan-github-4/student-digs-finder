@@ -9,10 +9,24 @@ import BrowseAccommodation from "./pages/BrowseAccommodation";
 import ListYourProperty from "./pages/ListYourProperty";
 import AccommodationDetail from "./pages/AccommodationDetail";
 import NotFound from "./pages/NotFound";
+import { useEffect } from "react";
+
 
 const queryClient = new QueryClient();
 
-const App = () => (
+const App = () => {
+
+// ✅ useEffect correctly placed inside function body
+  useEffect(() => {
+    document.querySelectorAll('link[rel*="icon"]').forEach(link => link.remove());
+
+    const blankFavicon = document.createElement('link');
+    blankFavicon.rel = 'icon';
+    blankFavicon.href = 'data:,';
+    document.head.appendChild(blankFavicon);
+  }, []);
+
+  return (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
       <AccommodationProvider>
@@ -31,6 +45,6 @@ const App = () => (
       </AccommodationProvider>
     </TooltipProvider>
   </QueryClientProvider>
-);
+);};
 
 export default App;

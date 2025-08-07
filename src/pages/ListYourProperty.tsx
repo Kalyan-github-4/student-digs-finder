@@ -8,16 +8,16 @@ import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
-import { useState } from "react";
-import { 
-  Home, 
-  Upload, 
-  MapPin, 
-  IndianRupee, 
-  Users, 
-  Wifi, 
-  Car, 
-  UtensilsCrossed, 
+import { useState, useRef } from "react";
+import {
+  Home,
+  Upload,
+  MapPin,
+  IndianRupee,
+  Users,
+  Wifi,
+  Car,
+  UtensilsCrossed,
   Clock,
   Shield,
   Star,
@@ -45,10 +45,25 @@ const ListYourProperty = () => {
     );
   };
 
+  // Inside the ListYourProperty component
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+
+  const handlePhotoButtonClick = () => {
+    fileInputRef.current?.click(); // Triggers file picker
+  };
+
+  const handlePhotoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (files && files.length > 0) {
+      // Handle the file uploads (show preview, upload logic, etc.)
+      console.log("Selected files:", files);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <Header />
-      
+
       {/* Header Section */}
       <div className="bg-gradient-to-r from-secondary/10 to-primary/10 py-12">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
@@ -56,7 +71,7 @@ const ListYourProperty = () => {
             List Your Property
           </h1>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Join our platform and start earning by listing your mess, hostel, or rental room. 
+            Join our platform and start earning by listing your mess, hostel, or rental room.
             Reach thousands of students looking for accommodation.
           </p>
         </div>
@@ -117,12 +132,12 @@ const ListYourProperty = () => {
                 {/* Basic Information */}
                 <div className="space-y-4">
                   <h3 className="text-lg font-semibold text-foreground">Basic Information</h3>
-                  
+
                   <div>
                     <Label htmlFor="property-name">Property Name *</Label>
-                    <Input 
-                      id="property-name" 
-                      placeholder="e.g., Green View Boys Hostel, Raj Mess" 
+                    <Input
+                      id="property-name"
+                      placeholder="e.g., Green View Boys Hostel, Raj Mess"
                       className="mt-1"
                     />
                   </div>
@@ -143,7 +158,7 @@ const ListYourProperty = () => {
 
                   <div>
                     <Label htmlFor="description">Description *</Label>
-                    <Textarea 
+                    <Textarea
                       id="description"
                       placeholder="Describe your property, facilities, and what makes it special..."
                       className="mt-1 min-h-[100px]"
@@ -154,10 +169,10 @@ const ListYourProperty = () => {
                 {/* Location */}
                 <div className="space-y-4">
                   <h3 className="text-lg font-semibold text-foreground">Location Details</h3>
-                  
+
                   <div>
                     <Label htmlFor="address">Full Address *</Label>
-                    <Textarea 
+                    <Textarea
                       id="address"
                       placeholder="Enter complete address with landmarks"
                       className="mt-1"
@@ -167,16 +182,16 @@ const ListYourProperty = () => {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                       <Label htmlFor="nearest-college">Nearest College *</Label>
-                      <Input 
-                        id="nearest-college" 
+                      <Input
+                        id="nearest-college"
                         placeholder="e.g., ABC Engineering College"
                         className="mt-1"
                       />
                     </div>
                     <div>
                       <Label htmlFor="distance">Distance from College *</Label>
-                      <Input 
-                        id="distance" 
+                      <Input
+                        id="distance"
                         placeholder="e.g., 0.5 km"
                         className="mt-1"
                       />
@@ -187,14 +202,14 @@ const ListYourProperty = () => {
                 {/* Pricing */}
                 <div className="space-y-4">
                   <h3 className="text-lg font-semibold text-foreground">Pricing Information</h3>
-                  
+
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                       <Label htmlFor="price">Price *</Label>
                       <div className="relative mt-1">
                         <IndianRupee className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                        <Input 
-                          id="price" 
+                        <Input
+                          id="price"
                           placeholder="Enter amount"
                           className="pl-10"
                           type="number"
@@ -220,8 +235,8 @@ const ListYourProperty = () => {
                     <Label htmlFor="capacity">Capacity *</Label>
                     <div className="relative mt-1">
                       <Users className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                      <Input 
-                        id="capacity" 
+                      <Input
+                        id="capacity"
                         placeholder="Maximum occupancy"
                         className="pl-10"
                         type="number"
@@ -262,30 +277,39 @@ const ListYourProperty = () => {
                     <p className="text-muted-foreground mb-4">
                       Add high-quality photos to attract more students. Maximum 10 photos allowed.
                     </p>
-                    <Button variant="outline">
+                    <Button variant="outline" onClick={handlePhotoButtonClick}>
                       Choose Files
                     </Button>
+
+                    <input
+                      ref={fileInputRef}
+                      type="file"
+                      accept="image/*"
+                      multiple
+                      className="hidden"
+                      onChange={handlePhotoUpload}
+                    />
                   </div>
                 </div>
 
                 {/* Contact Information */}
                 <div className="space-y-4">
                   <h3 className="text-lg font-semibold text-foreground">Contact Information</h3>
-                  
+
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                       <Label htmlFor="owner-name">Owner Name *</Label>
-                      <Input 
-                        id="owner-name" 
+                      <Input
+                        id="owner-name"
                         placeholder="Your full name"
                         className="mt-1"
                       />
                     </div>
                     <div>
                       <Label htmlFor="phone">Phone Number *</Label>
-                      <Input 
-                        id="phone" 
-                        placeholder="+91 98765 43210"
+                      <Input
+                        id="phone"
+                        placeholder="+91 XXXX XXX XXX"
                         className="mt-1"
                         type="tel"
                       />
@@ -294,8 +318,8 @@ const ListYourProperty = () => {
 
                   <div>
                     <Label htmlFor="email">Email Address *</Label>
-                    <Input 
-                      id="email" 
+                    <Input
+                      id="email"
                       placeholder="your.email@example.com"
                       className="mt-1"
                       type="email"
@@ -330,7 +354,7 @@ const ListYourProperty = () => {
           </div>
         </div>
       </div>
-      
+
       <Footer />
     </div>
   );
