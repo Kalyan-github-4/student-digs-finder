@@ -34,7 +34,7 @@ const mockAccommodations: Accommodation[] = [
     priceType: "month",
     rating: 4.5,
     reviewCount: 128,
-    image: "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=400&h=300&fit=crop",
+    image: "https://images.unsplash.com/photo-1619810230359-b2c2f61c49cd?w=400&h=300&fit=crop",
     amenities: ["Meals", "Delivery", "Veg/Non-veg"],
     availability: "available",
     description: "Home-style cooking with variety of North and South Indian dishes. Fresh vegetables and quality ingredients used daily.",
@@ -45,8 +45,8 @@ const mockAccommodations: Accommodation[] = [
     },
     rules: ["No outside food", "Advance payment required", "Clean utensils policy"],
     photos: [
-      "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=800&h=600&fit=crop",
-      "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800&h=600&fit=crop"
+      "https://images.unsplash.com/photo-1619810230359-b2c2f61c49cd?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1619810230359-b2c2f61c49cd?w=800&h=600&fit=crop"
     ]
   },
   {
@@ -59,7 +59,7 @@ const mockAccommodations: Accommodation[] = [
     priceType: "month",
     rating: 4.2,
     reviewCount: 89,
-    image: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=400&h=300&fit=crop",
+    image: "https://a0.muscache.com/im/pictures/hosting/Hosting-1270314768198309910/original/c389f712-5665-4b38-b83b-29f9b8fd73d0.jpeg",
     amenities: ["Wi-Fi", "AC", "24/7", "Meals"],
     availability: "limited",
     description: "Modern hostel facility with all amenities for comfortable stay. Safe and secure environment for students.",
@@ -70,8 +70,11 @@ const mockAccommodations: Accommodation[] = [
     },
     rules: ["No visitors after 10 PM", "Maintain cleanliness", "Respect quiet hours"],
     photos: [
-      "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800&h=600&fit=crop",
-      "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800&h=600&fit=crop"
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-1270314768198309910/original/c389f712-5665-4b38-b83b-29f9b8fd73d0.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-1270314768198309910/original/0cdd2574-c852-4591-af57-a815b502793f.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6MTI3MDMxNDc2ODE5ODMwOTkxMA==/original/87a7faee-502a-4d34-b93c-0025f5e30365.png",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-1270314768198309910/original/7d9ba1b2-6447-4f11-b781-a83a89695c53.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-1270314768198309910/original/5462f27e-db02-408c-b544-0793e8de5992.jpeg"
     ]
   },
   {
@@ -109,7 +112,7 @@ const mockAccommodations: Accommodation[] = [
     priceType: "month",
     rating: 4.3,
     reviewCount: 156,
-    image: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=400&h=300&fit=crop",
+    image: "https://a0.muscache.com/im/pictures/hosting/Hosting-1454831327322052843/original/ab14e42e-5ca6-448c-b7da-2cfd07d3f4f3.jpeg",
     amenities: ["Meals", "South Indian", "Home-style"],
     availability: "available",
     description: "Authentic South Indian cuisine with traditional flavors. Special focus on healthy and nutritious meals.",
@@ -120,35 +123,40 @@ const mockAccommodations: Accommodation[] = [
     },
     rules: ["Meal timings strictly followed", "No wastage policy", "Hygienic practices"],
     photos: [
-      "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800&h=600&fit=crop",
-      "https://images.unsplash.com/photo-1596797038530-2c107229654b?w=800&h=600&fit=crop"
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-1454831327322052843/original/0f300a03-bdfa-4fc6-819e-09e30a8b3b59.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-1454831327322052843/original/b73ed3fe-78c0-41f4-a425-b20ed5e47c93.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-1454831327322052843/original/7b246f4d-a30a-4377-9c79-c4e713086d19.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-1454831327322052843/original/5fef837c-cb8e-4135-8eb7-f48be6dd08ed.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-1454831327322052843/original/0f300a03-bdfa-4fc6-819e-09e30a8b3b59.jpeg"
     ]
+
   },
   {
-  id: "5",
-  title: "Shared Room - Male Students",
-  type: "room",
-  location: "Campus View",
-  distance: "1.5 km",
-  price: 8000,
-  priceType: "month",
-  rating: 4.0,
-  reviewCount: 67,
-  image: "https://images.unsplash.com/photo-1621891337421-af0e6b355e2f?w=1170&fit=crop",
-  amenities: ["Wi-Fi", "Shared", "Study Room"],
-  availability: "limited",
-  description: "Shared accommodation for male students with study facilities. Budget-friendly option near campus.",
-  contact: {
-    phone: "+91 98765 43214",
-    email: "sharedroom@example.com",
-    owner: "Amit Singh"
+    id: "5",
+    title: "Shared Room - Male Students",
+    type: "room",
+    location: "Campus View",
+    distance: "1.5 km",
+    price: 8000,
+    priceType: "month",
+    rating: 4.0,
+    reviewCount: 67,
+    image: "https://images.unsplash.com/photo-1621891337421-af0e6b355e2f?w=1170&fit=crop",
+    amenities: ["Wi-Fi", "Shared", "Study Room"],
+    availability: "limited",
+    description: "Shared accommodation for male students with study facilities. Budget-friendly option near campus.",
+    contact: {
+      phone: "+91 98765 43214",
+      email: "sharedroom@example.com",
+      owner: "Amit Singh"
+    },
+    rules: ["Male students only", "Shared responsibility", "Study hours respected"],
+    photos: [
+      "https://images.unsplash.com/photo-1621891337421-af0e6b355e2f?w=1170&fit=crop",
+      "https://images.unsplash.com/photo-1621891337421-af0e6b355e2f?w=1170&fit=crop",
+      "https://images.unsplash.com/photo-1621891337421-af0e6b355e2f?w=1170&fit=crop"
+    ]
   },
-  rules: ["Male students only", "Shared responsibility", "Study hours respected"],
-  photos: [
-    "https://images.unsplash.com/photo-1621891337421-af0e6b355e2f?w=1170&fit=crop",
-    "https://images.unsplash.com/photo-1621891337421-af0e6b355e2f?w=1170&fit=crop"
-  ]
-},
 
   {
     id: "6",
@@ -160,7 +168,7 @@ const mockAccommodations: Accommodation[] = [
     priceType: "month",
     rating: 4.8,
     reviewCount: 234,
-    image: "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=400&h=300&fit=crop",
+    image: "https://shorturl.at/QqwSv",
     amenities: ["Wi-Fi", "AC", "24/7", "Meals", "Gym"],
     availability: "full",
     description: "Premium accommodation for female students with top-notch security and amenities. Comfortable and safe environment.",
@@ -171,8 +179,12 @@ const mockAccommodations: Accommodation[] = [
     },
     rules: ["Female students only", "Security protocols", "No male visitors"],
     photos: [
-      "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=800&h=600&fit=crop",
-      "https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?w=800&h=600&fit=crop"
+      "https://a0.muscache.com/im/pictures/e4752c79-006a-4a80-912c-89aca0e90555.jpg",
+      "https://a0.muscache.com/im/pictures/140204d7-e530-44e4-9427-d644b95fb0e4.jpg",
+      "https://a0.muscache.com/im/pictures/0801dc66-770a-4d31-9c40-3a152c495871.jpg",
+      "https://a0.muscache.com/im/pictures/ab2c95e2-a8e9-4ae5-bb5b-1d25713a3bab.jpg",
+      "https://a0.muscache.com/im/pictures/4ca2c01a-aef4-4a7e-bf70-e996b13f4dc8.jpg",
+
     ]
   }
 ];
@@ -194,7 +206,7 @@ export const AccommodationProvider = ({ children }: { children: ReactNode }) => 
     accommodation.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
     accommodation.location.toLowerCase().includes(searchQuery.toLowerCase()) ||
     accommodation.type.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    accommodation.amenities.some(amenity => 
+    accommodation.amenities.some(amenity =>
       amenity.toLowerCase().includes(searchQuery.toLowerCase())
     )
   );
