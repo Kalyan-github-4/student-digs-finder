@@ -10,7 +10,7 @@ git clone "https://github.com/Kalyan-github-4/student-digs-finder"
 cd student-digs-finder
 
 # Step 3: Install the necessary dependencies.
-npm i
+npm install
 
 # Step 4: Start the development server with auto-reloading and an instant preview.
 npm run dev
