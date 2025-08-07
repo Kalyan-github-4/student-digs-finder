@@ -1,9 +1,20 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Search, MapPin, Calendar, Users } from "lucide-react";
+import { useAccommodation } from "@/contexts/AccommodationContext";
 import heroImage from "@/assets/hero-campus.jpg";
 
 const HeroSection = () => {
+  const { searchQuery, setSearchQuery } = useAccommodation();
+
+  const handleSearch = () => {
+    // Scroll to results section
+    const resultsSection = document.getElementById('results-section');
+    if (resultsSection) {
+      resultsSection.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
     <section className="relative min-h-[80vh] flex items-center justify-center bg-gradient-to-br from-primary/5 to-secondary/5">
       {/* Background Image with Overlay */}
@@ -40,6 +51,9 @@ const HeroSection = () => {
                   <Input
                     placeholder="Enter your college or location..."
                     className="pl-10 h-12 border-0 bg-muted/50 focus:bg-background transition-colors"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
                   />
                 </div>
               </div>
@@ -55,7 +69,7 @@ const HeroSection = () => {
               </div>
               
               <div>
-                <Button variant="hero" className="w-full h-12">
+                <Button variant="hero" className="w-full h-12" onClick={handleSearch}>
                   <Search className="h-5 w-5 mr-2" />
                   Search
                 </Button>

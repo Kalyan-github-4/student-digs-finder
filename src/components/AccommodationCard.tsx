@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { MapPin, Star, Wifi, Car, UtensilsCrossed, Clock, Users } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 interface AccommodationCardProps {
   id: string;
@@ -19,6 +20,7 @@ interface AccommodationCardProps {
 }
 
 const AccommodationCard = ({
+  id,
   title,
   type,
   location,
@@ -31,6 +33,7 @@ const AccommodationCard = ({
   amenities,
   availability
 }: AccommodationCardProps) => {
+  const navigate = useNavigate();
   const typeColors = {
     mess: "bg-success text-success-foreground",
     room: "bg-primary text-primary-foreground",
@@ -111,7 +114,11 @@ const AccommodationCard = ({
             <span className="text-2xl font-bold text-foreground">₹{price}</span>
             <span className="text-muted-foreground text-sm">/{priceType}</span>
           </div>
-          <Button variant="default" size="sm">
+          <Button 
+            variant="default" 
+            size="sm"
+            onClick={() => navigate(`/accommodation/${id}`)}
+          >
             View Details
           </Button>
         </div>
