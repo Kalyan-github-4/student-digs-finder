@@ -5,6 +5,8 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AccommodationProvider } from "@/contexts/AccommodationContext";
 import Index from "./pages/Index";
+import BrowseAccommodation from "./pages/BrowseAccommodation";
+import ListYourProperty from "./pages/ListYourProperty";
 import AccommodationDetail from "./pages/AccommodationDetail";
 import NotFound from "./pages/NotFound";
 
@@ -19,6 +21,8 @@ const App = () => (
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Index />} />
+            <Route path="/browse" element={<BrowseAccommodation />} />
+            <Route path="/list-property" element={<ListYourProperty />} />
             <Route path="/accommodation/:id" element={<AccommodationDetail />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />

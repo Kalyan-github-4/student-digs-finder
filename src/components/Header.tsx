@@ -1,28 +1,46 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Menu, X, Home, MapPin, User, Bell } from "lucide-react";
+import { Link, useLocation } from "react-router-dom";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const location = useLocation();
+
+  const isActive = (path: string) => location.pathname === path;
 
   return (
     <header className="bg-card/95 backdrop-blur-sm border-b border-border sticky top-0 z-50">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
-          <div className="flex items-center space-x-2">
+          <Link to="/" className="flex items-center space-x-2">
             <Home className="h-8 w-8 text-primary" />
             <span className="text-xl font-bold text-foreground">CampusHub</span>
-          </div>
+          </Link>
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
-            <a href="#" className="text-foreground hover:text-primary transition-colors">
+            <Link 
+              to="/browse" 
+              className={`transition-colors ${
+                isActive('/browse') 
+                  ? 'text-primary font-medium' 
+                  : 'text-foreground hover:text-primary'
+              }`}
+            >
               Browse Accommodations
-            </a>
-            <a href="#" className="text-foreground hover:text-primary transition-colors">
+            </Link>
+            <Link 
+              to="/list-property" 
+              className={`transition-colors ${
+                isActive('/list-property') 
+                  ? 'text-primary font-medium' 
+                  : 'text-foreground hover:text-primary'
+              }`}
+            >
               List Your Property
-            </a>
+            </Link>
             <a href="#" className="text-foreground hover:text-primary transition-colors">
               About
             </a>
@@ -61,12 +79,28 @@ const Header = () => {
         {isMenuOpen && (
           <div className="md:hidden py-4 border-t border-border">
             <div className="flex flex-col space-y-4">
-              <a href="#" className="text-foreground hover:text-primary transition-colors">
+              <Link 
+                to="/browse" 
+                className={`transition-colors ${
+                  isActive('/browse') 
+                    ? 'text-primary font-medium' 
+                    : 'text-foreground hover:text-primary'
+                }`}
+                onClick={() => setIsMenuOpen(false)}
+              >
                 Browse Accommodations
-              </a>
-              <a href="#" className="text-foreground hover:text-primary transition-colors">
+              </Link>
+              <Link 
+                to="/list-property" 
+                className={`transition-colors ${
+                  isActive('/list-property') 
+                    ? 'text-primary font-medium' 
+                    : 'text-foreground hover:text-primary'
+                }`}
+                onClick={() => setIsMenuOpen(false)}
+              >
                 List Your Property
-              </a>
+              </Link>
               <a href="#" className="text-foreground hover:text-primary transition-colors">
                 About
               </a>
