@@ -9,6 +9,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { useState, useRef } from "react";
+import { useAccommodation } from "@/contexts/AccommodationContext";
+import { useToast } from "@/hooks/use-toast";
+import { Trash2 } from "lucide-react";
 import {
   Home,
   Upload,
@@ -28,6 +31,28 @@ const ListYourProperty = () => {
   const [propertyType, setPropertyType] = useState("");
   const [selectedAmenities, setSelectedAmenities] = useState<string[]>([]);
 
+  const { addAccommodation } = useAccommodation();
+  const { toast } = useToast();
+
+  // Existing state
+  const [formData, setFormData] = useState({
+    title: "",
+    type: "",
+    location: "",
+    distance: "",
+    price: "",
+    priceType: "",
+    description: "",
+    amenities: [] as string[],
+    contact: {
+      owner: "",
+      phone: "",
+      email: ""
+    },
+    photos: [] as File[],
+    capacity: ""
+  });
+
   const amenitiesList = [
     { id: "wifi", label: "Wi-Fi", icon: Wifi },
     { id: "parking", label: "Parking", icon: Car },
@@ -37,12 +62,13 @@ const ListYourProperty = () => {
     { id: "security", label: "Security", icon: Shield },
   ];
 
-  const handleAmenityChange = (amenityId: string) => {
-    setSelectedAmenities(prev =>
-      prev.includes(amenityId)
-        ? prev.filter(id => id !== amenityId)
-        : [...prev, amenityId]
-    );
+  const handleAmenityChange = (amenityId: string, isChecked: boolean) => {
+    setFormData(prev => ({
+      ...prev,
+      amenities: isChecked
+        ? [...prev.amenities, amenityId] // add if checked
+        : prev.amenities.filter(id => id !== amenityId) // remove if unchecked
+    }));
   };
 
   // Inside the ListYourProperty component
@@ -55,10 +81,107 @@ const ListYourProperty = () => {
   const handlePhotoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (files && files.length > 0) {
-      // Handle the file uploads (show preview, upload logic, etc.)
-      console.log("Selected files:", files);
+      const selectedFiles = Array.from(files).slice(0, 10);
+      setFormData(prev => ({
+        ...prev,
+        photos: [...prev.photos, ...selectedFiles]
+      }));
     }
   };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    // Basic validation
+    if (!formData.title || !formData.type || !formData.location || !formData.price) {
+      toast({
+        variant: "destructive",
+        title: "Missing Information",
+        description: "Please fill in all required fields."
+      });
+      return;
+    }
+
+    // Convert photos to base64
+    try {
+      const photoPromises = formData.photos.map(file => {
+        return new Promise<string>((resolve) => {
+          const reader = new FileReader();
+          reader.onload = (e) => resolve(e.target?.result as string);
+          reader.readAsDataURL(file);
+        });
+      });
+      const photoUrls = await Promise.all(photoPromises);
+      // Create new accommodation object
+      const newAccommodation = {
+        id: Date.now().toString(),
+        title: formData.title,
+        type: formData.type as "mess" | "room" | "hostel",
+        location: formData.location,
+        distance: formData.distance,
+        price: Number(formData.price),
+        priceType: formData.priceType as "month" | "meal" | "night",
+        rating: 0, // New listings start with 0 ratings
+        reviewCount: 0,
+        image: photoUrls[0] || "", // Use first photo as main image
+        amenities: formData.amenities,
+        availability: "available",
+        description: formData.description,
+        contact: {
+          phone: formData.contact.phone,
+          email: formData.contact.email,
+          owner: formData.contact.owner
+        },
+        photos: photoUrls,
+        rules: [] // Can be added later
+      };
+      // Add to context
+      addAccommodation(newAccommodation);
+      // Show success message
+      toast({
+        title: "Property Listed!",
+        description: "Your property has been submitted for review."
+      });
+
+      setFormData({
+        title: "",
+        type: "",
+        location: "",
+        distance: "",
+        price: "",
+        priceType: "",
+        description: "",
+        amenities: [],
+        contact: {
+          owner: "",
+          phone: "",
+          email: ""
+        },
+        photos: [],
+        capacity: ""
+      });
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Failed to list property. Please try again."
+      });
+    };
+  }
+
+
+
+
+
+  // // Update your form inputs to use formData state
+  // // Example for property name input:
+  // <Input
+  //   id="property-name"
+  //   value={formData.title}
+  //   onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+  //   placeholder="e.g., Green View Boys Hostel, Raj Mess"
+  //   className="mt-1"
+  // />
 
   return (
     <div className="min-h-screen bg-background">
@@ -137,14 +260,17 @@ const ListYourProperty = () => {
                     <Label htmlFor="property-name">Property Name *</Label>
                     <Input
                       id="property-name"
+                      value={formData.title}
+                      onChange={(e) => setFormData({ ...formData, title: e.target.value })}
                       placeholder="e.g., Green View Boys Hostel, Raj Mess"
                       className="mt-1"
+                      required
                     />
                   </div>
 
                   <div>
                     <Label htmlFor="property-type">Property Type *</Label>
-                    <Select value={propertyType} onValueChange={setPropertyType}>
+                    <Select value={formData.type} onValueChange={(value => setFormData({ ...formData, type: value }))} required>
                       <SelectTrigger className="mt-1">
                         <SelectValue placeholder="Select property type" />
                       </SelectTrigger>
@@ -160,8 +286,11 @@ const ListYourProperty = () => {
                     <Label htmlFor="description">Description *</Label>
                     <Textarea
                       id="description"
+                      value={formData.description}
+                      onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                       placeholder="Describe your property, facilities, and what makes it special..."
                       className="mt-1 min-h-[100px]"
+                      required
                     />
                   </div>
                 </div>
@@ -174,8 +303,11 @@ const ListYourProperty = () => {
                     <Label htmlFor="address">Full Address *</Label>
                     <Textarea
                       id="address"
+                      value={formData.location}
+                      onChange={(e) => setFormData({ ...formData, location: e.target.value })}
                       placeholder="Enter complete address with landmarks"
                       className="mt-1"
+                      required
                     />
                   </div>
 
@@ -184,16 +316,22 @@ const ListYourProperty = () => {
                       <Label htmlFor="nearest-college">Nearest College *</Label>
                       <Input
                         id="nearest-college"
+                        value={formData.distance}
+                        onChange={(e) => setFormData({ ...formData, distance: e.target.value })}
                         placeholder="e.g., ABC Engineering College"
                         className="mt-1"
+                        required
                       />
                     </div>
                     <div>
                       <Label htmlFor="distance">Distance from College *</Label>
                       <Input
                         id="distance"
+                        value={formData.distance}
+                        onChange={(e) => setFormData({ ...formData, distance: e.target.value })}
                         placeholder="e.g., 0.5 km"
                         className="mt-1"
+                        required
                       />
                     </div>
                   </div>
@@ -210,15 +348,21 @@ const ListYourProperty = () => {
                         <IndianRupee className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                         <Input
                           id="price"
+                          value={formData.price}
+                          onChange={(e) => setFormData({ ...formData, price: e.target.value })}
                           placeholder="Enter amount"
                           className="pl-10"
                           type="number"
+                          required
                         />
                       </div>
                     </div>
                     <div>
                       <Label htmlFor="price-type">Price Type *</Label>
-                      <Select>
+                      <Select
+                        value={formData.priceType}
+                        onValueChange={(value) => setFormData({ ...formData, priceType: value })}
+                      >
                         <SelectTrigger className="mt-1">
                           <SelectValue placeholder="Select pricing" />
                         </SelectTrigger>
@@ -240,6 +384,9 @@ const ListYourProperty = () => {
                         placeholder="Maximum occupancy"
                         className="pl-10"
                         type="number"
+                        value={formData.capacity}
+                        onChange={(e) => setFormData({ ...formData, capacity: e.target.value })}
+                        required
                       />
                     </div>
                   </div>
@@ -255,9 +402,10 @@ const ListYourProperty = () => {
                         <div key={amenity.id} className="flex items-center space-x-2">
                           <Checkbox
                             id={amenity.id}
-                            checked={selectedAmenities.includes(amenity.id)}
-                            onCheckedChange={() => handleAmenityChange(amenity.id)}
+                            checked={formData.amenities.includes(amenity.id)}
+                            onCheckedChange={(isChecked) => handleAmenityChange(amenity.id, isChecked as boolean)}
                           />
+
                           <Label htmlFor={amenity.id} className="flex items-center cursor-pointer">
                             <IconComponent className="h-4 w-4 mr-2" />
                             {amenity.label}
@@ -277,7 +425,7 @@ const ListYourProperty = () => {
                     <p className="text-muted-foreground mb-4">
                       Add high-quality photos to attract more students. Maximum 10 photos allowed.
                     </p>
-                    <Button variant="outline" onClick={handlePhotoButtonClick}>
+                    <Button variant="outline" type="button" onClick={handlePhotoButtonClick}>
                       Choose Files
                     </Button>
 
@@ -290,6 +438,29 @@ const ListYourProperty = () => {
                       onChange={handlePhotoUpload}
                     />
                   </div>
+                  {formData.photos.length > 0 && (
+                    <div className="grid grid-cols-3 gap-2">
+                      {formData.photos.map((photo, index) => (
+                        <div key={index} className="relative">
+                          <img
+                            src={URL.createObjectURL(photo)}
+                            alt={`Preview ${index}`}
+                            className="h-24 w-full object-cover rounded"
+                          />
+                          <button
+                            type="button"
+                            onClick={() => setFormData({
+                              ...formData,
+                              photos: formData.photos.filter((_, i) => i !== index)
+                            })}
+                            className="absolute top-1 right-1 bg-destructive text-destructive-foreground rounded-full p-1"
+                          >
+                            <Trash2 className="w-3 h-3" />
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
 
                 {/* Contact Information */}
@@ -303,6 +474,12 @@ const ListYourProperty = () => {
                         id="owner-name"
                         placeholder="Your full name"
                         className="mt-1"
+                        value={formData.contact.owner}
+                        onChange={(e) => setFormData({
+                          ...formData,
+                          contact: { ...formData.contact, owner: e.target.value }
+                        })}
+                        required
                       />
                     </div>
                     <div>
@@ -312,6 +489,12 @@ const ListYourProperty = () => {
                         placeholder="+91 XXXX XXX XXX"
                         className="mt-1"
                         type="tel"
+                        value={formData.contact.phone}
+                        onChange={(e) => setFormData({
+                          ...formData,
+                          contact: { ...formData.contact, phone: e.target.value }
+                        })}
+                        required
                       />
                     </div>
                   </div>
@@ -323,6 +506,12 @@ const ListYourProperty = () => {
                       placeholder="your.email@example.com"
                       className="mt-1"
                       type="email"
+                      value={formData.contact.email}
+                      onChange={(e) => setFormData({
+                        ...formData,
+                        contact: { ...formData.contact, email: e.target.value }
+                      })}
+                      required
                     />
                   </div>
                 </div>
@@ -330,17 +519,22 @@ const ListYourProperty = () => {
                 {/* Terms and Submit */}
                 <div className="space-y-4 pt-6 border-t border-border">
                   <div className="flex items-center space-x-2">
-                    <Checkbox id="terms" />
+                    <Checkbox id="terms" required />
                     <Label htmlFor="terms" className="text-sm">
                       I agree to the <span className="text-primary">Terms of Service</span> and <span className="text-primary">Privacy Policy</span>
                     </Label>
                   </div>
 
                   <div className="flex space-x-4">
-                    <Button variant="outline" className="flex-1">
+                    <Button variant="outline" className="flex-1" type="button" onClick={() => {
+                      toast({
+                        title: "Draft Saved",
+                        description: "Your property details have been saved as a draft.",
+                      })
+                    }}>
                       Save as Draft
                     </Button>
-                    <Button className="flex-1">
+                    <Button className="flex-1" type="submit">
                       Submit for Review
                     </Button>
                   </div>

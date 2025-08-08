@@ -21,6 +21,7 @@ export interface Accommodation {
   };
   rules?: string[];
   photos?: string[];
+  status?: "pending" | "approved" | "rejected";
 }
 
 const mockAccommodations: Accommodation[] = [
@@ -186,65 +187,8 @@ const mockAccommodations: Accommodation[] = [
       "https://a0.muscache.com/im/pictures/4ca2c01a-aef4-4a7e-bf70-e996b13f4dc8.jpg",
 
     ]
-  },
-  {
-    id: "7",
-    title: "Premium Girls Hostel",
-    type: "hostel",
-    location: "Safe Zone",
-    distance: "2.1 km",
-    price: 18000,
-    priceType: "month",
-    rating: 4.8,
-    reviewCount: 234,
-    image: "https://shorturl.at/QqwSv",
-    amenities: ["Wi-Fi", "AC", "24/7", "Meals", "Gym"],
-    availability: "full",
-    description: "Premium accommodation for female students with top-notch security and amenities. Comfortable and safe environment.",
-    contact: {
-      phone: "+91 98765 43215",
-      email: "premiumgirls@example.com",
-      owner: "Sunita Agarwal"
-    },
-    rules: ["Female students only", "Security protocols", "No male visitors"],
-    photos: [
-      "https://a0.muscache.com/im/pictures/e4752c79-006a-4a80-912c-89aca0e90555.jpg",
-      "https://a0.muscache.com/im/pictures/140204d7-e530-44e4-9427-d644b95fb0e4.jpg",
-      "https://a0.muscache.com/im/pictures/0801dc66-770a-4d31-9c40-3a152c495871.jpg",
-      "https://a0.muscache.com/im/pictures/ab2c95e2-a8e9-4ae5-bb5b-1d25713a3bab.jpg",
-      "https://a0.muscache.com/im/pictures/4ca2c01a-aef4-4a7e-bf70-e996b13f4dc8.jpg",
-
-    ]
-  },
-  {
-    id: "8",
-    title: "Premium Girls Hostel",
-    type: "hostel",
-    location: "Safe Zone",
-    distance: "2.1 km",
-    price: 18000,
-    priceType: "month",
-    rating: 4.8,
-    reviewCount: 234,
-    image: "https://shorturl.at/QqwSv",
-    amenities: ["Wi-Fi", "AC", "24/7", "Meals", "Gym"],
-    availability: "full",
-    description: "Premium accommodation for female students with top-notch security and amenities. Comfortable and safe environment.",
-    contact: {
-      phone: "+91 98765 43215",
-      email: "premiumgirls@example.com",
-      owner: "Sunita Agarwal"
-    },
-    rules: ["Female students only", "Security protocols", "No male visitors"],
-    photos: [
-      "https://a0.muscache.com/im/pictures/e4752c79-006a-4a80-912c-89aca0e90555.jpg",
-      "https://a0.muscache.com/im/pictures/140204d7-e530-44e4-9427-d644b95fb0e4.jpg",
-      "https://a0.muscache.com/im/pictures/0801dc66-770a-4d31-9c40-3a152c495871.jpg",
-      "https://a0.muscache.com/im/pictures/ab2c95e2-a8e9-4ae5-bb5b-1d25713a3bab.jpg",
-      "https://a0.muscache.com/im/pictures/4ca2c01a-aef4-4a7e-bf70-e996b13f4dc8.jpg",
-
-    ]
   }
+
 ];
 
 interface AccommodationContextType {
@@ -253,12 +197,14 @@ interface AccommodationContextType {
   setSearchQuery: (query: string) => void;
   filteredAccommodations: Accommodation[];
   getAccommodationById: (id: string) => Accommodation | undefined;
+  addAccommodation: (newAccommodation: Omit<Accommodation, 'id'>) => void;
 }
 
 const AccommodationContext = createContext<AccommodationContextType | undefined>(undefined);
 
 export const AccommodationProvider = ({ children }: { children: ReactNode }) => {
   const [searchQuery, setSearchQuery] = useState("");
+  const [accommodations, setAccommodations] = useState<Accommodation[]>(mockAccommodations);
 
   const filteredAccommodations = mockAccommodations.filter(accommodation =>
     accommodation.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -273,13 +219,27 @@ export const AccommodationProvider = ({ children }: { children: ReactNode }) => 
     return mockAccommodations.find(acc => acc.id === id);
   };
 
+   const addAccommodation = (newAccommodation: Omit<Accommodation, 'id'>) => {
+    const accommodationWithId: Accommodation = {
+      ...newAccommodation,
+      id: Date.now().toString(),
+      status: newAccommodation.status || "pending",
+      rating: newAccommodation.rating || 0,
+      reviewCount: newAccommodation.reviewCount || 0,
+      availability: newAccommodation.availability || "available"
+    };
+    
+    setAccommodations(prev => [...prev, accommodationWithId]);
+  };
+
   return (
     <AccommodationContext.Provider value={{
-      accommodations: mockAccommodations,
+      accommodations,
       searchQuery,
       setSearchQuery,
       filteredAccommodations,
-      getAccommodationById
+      getAccommodationById,
+      addAccommodation
     }}>
       {children}
     </AccommodationContext.Provider>
