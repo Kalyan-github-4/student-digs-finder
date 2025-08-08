@@ -1,10 +1,13 @@
-import { createContext, useContext, useState, ReactNode } from 'react';
+import { error } from 'console';
+import { createContext, useContext, useState, ReactNode, useEffect } from 'react';
+import { json } from 'stream/consumers';
 
 export interface Accommodation {
   id: string;
   title: string;
   type: "mess" | "room" | "hostel";
   location: string;
+  nearestCollege?: string;
   distance: string;
   price: number;
   priceType: "month" | "meal" | "night";
@@ -164,6 +167,7 @@ const mockAccommodations: Accommodation[] = [
     title: "Premium Girls Hostel",
     type: "hostel",
     location: "Safe Zone",
+    nearestCollege: "ABC Engineering College",
     distance: "2.1 km",
     price: 18000,
     priceType: "month",
@@ -206,6 +210,24 @@ export const AccommodationProvider = ({ children }: { children: ReactNode }) => 
   const [searchQuery, setSearchQuery] = useState("");
   const [accommodations, setAccommodations] = useState<Accommodation[]>(mockAccommodations);
 
+  //Load from localStorage on initial render
+  useEffect(() => {
+    const saved = localStorage.getItem("accommodations");
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        setAccommodations(parsed);
+      } catch (error) {
+        console.error("Failed to parse accommodations from localStorage", error);
+      }
+    }
+  }, [])
+
+  //Save to localStorage whenever accommodations change
+  useEffect(() => {
+    localStorage.setItem("acomodations", JSON.stringify(accommodations));
+  }, [accommodations])
+
   const filteredAccommodations = mockAccommodations.filter(accommodation =>
     accommodation.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
     accommodation.location.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -219,7 +241,7 @@ export const AccommodationProvider = ({ children }: { children: ReactNode }) => 
     return mockAccommodations.find(acc => acc.id === id);
   };
 
-   const addAccommodation = (newAccommodation: Omit<Accommodation, 'id'>) => {
+  const addAccommodation = (newAccommodation: Omit<Accommodation, 'id'>) => {
     const accommodationWithId: Accommodation = {
       ...newAccommodation,
       id: Date.now().toString(),
@@ -228,8 +250,9 @@ export const AccommodationProvider = ({ children }: { children: ReactNode }) => 
       reviewCount: newAccommodation.reviewCount || 0,
       availability: newAccommodation.availability || "available"
     };
-    
+
     setAccommodations(prev => [...prev, accommodationWithId]);
+    return accommodationWithId; // Return the created accommodation
   };
 
   return (
