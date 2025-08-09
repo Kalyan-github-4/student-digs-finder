@@ -12,21 +12,7 @@ import { useState, useRef } from "react";
 import { Accommodation, useAccommodation } from "@/contexts/AccommodationContext";
 import { useToast } from "@/hooks/use-toast";
 import { Trash2, Loader2 } from "lucide-react";
-import {
-  Home,
-  Upload,
-  MapPin,
-  IndianRupee,
-  Users,
-  Wifi,
-  Car,
-  UtensilsCrossed,
-  Clock,
-  Shield,
-  Star,
-  CheckCircle
-} from "lucide-react";
-import { rejects } from "assert";
+import { Home, Upload, MapPin, IndianRupee, Users, Wifi, Car, UtensilsCrossed, Clock, Shield, Star, CheckCircle } from "lucide-react";
 
 const ListYourProperty = () => {
   const [propertyType, setPropertyType] = useState("");
@@ -383,14 +369,18 @@ const ListYourProperty = () => {
 
                     <div>
                       <Label htmlFor="address">Full Address *</Label>
+                      <div  className="relative mt-1">
+                      <MapPin className="absolute left-3 top-3 h-4 w-4 text-muted-foreground"/>
                       <Textarea
                         id="address"
                         value={formData.location}
                         onChange={(e) => setFormData({ ...formData, location: e.target.value })}
                         placeholder="Enter complete address with landmarks"
-                        className="mt-1"
+                        className="mt-2 pl-10"
                         required
                       />
+
+                      </div>
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -625,7 +615,7 @@ const ListYourProperty = () => {
                       </Button>
 
                       {/* Submit for Review Button */}
-                      <Button className="flex-1" type="submit"
+                      <Button className="flex-1 disabled:cursor-not-allowed disabled:pointer-events-auto" type="submit"
                         disabled={isSubmitting || !formData.agreeToTerms}
                       > {isSubmitting ? (
                         <Loader2 className="mr-2 h-4 w-4 animate-spin" />

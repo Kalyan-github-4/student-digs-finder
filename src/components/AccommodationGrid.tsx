@@ -77,17 +77,6 @@ const AccommodationGrid = () => {
 
           />
 
-        {/* <div className="flex justify-end gap-2" >
-          <Button variant="outline" className="transition-transform duration-200 hover:scale-105">
-            <ChevronLeftIcon />Prev
-          </Button>
-          <Button variant="outline" className="transition-transform duration-200 hover:scale-105">
-            Next <ChevronRightIcon />
-          </Button>
-
-        </div> */}
-
-
         {filteredAccommodations.length === 0 && searchQuery && (
           <div className="text-center py-12">
             <h3 className="text-lg font-medium text-foreground mb-2">No accommodations found</h3>

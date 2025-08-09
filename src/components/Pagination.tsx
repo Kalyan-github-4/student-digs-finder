@@ -15,7 +15,7 @@ const Pagination = ({ currentPage, totalPages, onNext, onPrev }: PaginationProps
         variant="outline"
         onClick={onPrev}
         disabled={currentPage === 1}
-        className="transition-transform duration-200 hover:scale-105"
+        className="transition-transform duration-200 hover:scale-105 disabled:cursor-not-allowed disabled:pointer-events-auto"
       >
         <ChevronLeftIcon /> Prev
       </Button>
@@ -23,7 +23,7 @@ const Pagination = ({ currentPage, totalPages, onNext, onPrev }: PaginationProps
         variant="outline"
         onClick={onNext}
         disabled={currentPage === totalPages}
-        className="transition-transform duration-200 hover:scale-105"
+        className="transition-transform duration-200 hover:scale-105 disabled:cursor-not-allowed disabled:pointer-events-auto"
       >
         Next <ChevronRightIcon />
       </Button>
