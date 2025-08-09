@@ -180,7 +180,7 @@ const AccommodationDetail = () => {
 
             {/* Action Buttons */}
             <div className="grid grid-cols-2 gap-4">
-              <Button variant="outline" className="h-12">
+              <Button variant="outline" className="h-12 bg-white">
                 <Phone className="h-4 w-4 mr-2" />
                 Call Now
               </Button>
