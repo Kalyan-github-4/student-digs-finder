@@ -9,7 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { useState, useRef } from "react";
-import { useAccommodation } from "@/contexts/AccommodationContext";
+import { Accommodation, useAccommodation } from "@/contexts/AccommodationContext";
 import { useToast } from "@/hooks/use-toast";
 import { Trash2, Loader2 } from "lucide-react";
 import {
@@ -39,6 +39,7 @@ const ListYourProperty = () => {
 
   // Existing state
   const [formData, setFormData] = useState({
+    id: "",
     title: "",
     type: "",
     location: "",
@@ -47,6 +48,7 @@ const ListYourProperty = () => {
     price: "",
     priceType: "",
     description: "",
+    availability: "",
     amenities: [] as string[],
     contact: {
       owner: "",
@@ -164,7 +166,7 @@ const ListYourProperty = () => {
     // Convert photos to base64
     try {
       const photoPromises = (formData.photos || []).map(file => {
-        return new Promise<string>((resolve) => {
+        return new Promise<string>((resolve, reject) => {
           const reader = new FileReader();
           reader.onload = (e) => resolve(e.target?.result as string);
           reader.onerror = (error) => reject(error);
@@ -176,8 +178,7 @@ const ListYourProperty = () => {
       const photoUrls = await Promise.all(photoPromises);
 
       // Create new accommodation object
-      const newAccommodation = {
-        id: Date.now().toString(),
+      const newAccommodation: Omit<Accommodation, "id"> = {
         title: formData.title,
         type: formData.type as "mess" | "room" | "hostel",
         location: formData.location,
@@ -188,7 +189,7 @@ const ListYourProperty = () => {
         reviewCount: 0,
         image: photoUrls[0] || "", // Use first photo as main image
         amenities: formData.amenities,
-        availability: "available",
+        availability: formData.availability as "available" | "limited" | "full" | "",
         description: formData.description,
         contact: {
           phone: formData.contact.phone,
@@ -206,8 +207,8 @@ const ListYourProperty = () => {
 
       // If this was a draft being submitted, remove it
       if (formData.id?.startsWith('draft-')) {
-        const drafts = JSON.parse(localStorage.getItem('propertyDrafts') || '[]');
-        const updatedDrafts = drafts.filter((d: any) => d.id !== formData.id);
+        const drafts: Accommodation[] = JSON.parse(localStorage.getItem('propertyDrafts') || '[]');
+        const updatedDrafts = drafts.filter(d => d.id !== formData.id);
         localStorage.setItem('propertyDrafts', JSON.stringify(updatedDrafts));
       }
       // Show success message
@@ -218,6 +219,7 @@ const ListYourProperty = () => {
 
       // Reset form
       setFormData({
+        id: "",
         title: "",
         type: "",
         location: "",
@@ -227,6 +229,7 @@ const ListYourProperty = () => {
         priceType: "",
         description: "",
         amenities: [],
+        availability: "",
         contact: {
           owner: "",
           phone: "",
@@ -248,10 +251,6 @@ const ListYourProperty = () => {
       setIsSubmitting(false)
     }
   }
-
-
-
-
 
   // // Update your form inputs to use formData state
   // // Example for property name input:

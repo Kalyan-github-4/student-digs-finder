@@ -15,7 +15,7 @@ export interface Accommodation {
   reviewCount: number;
   image: string;
   amenities: string[];
-  availability: "available" | "limited" | "full";
+  availability: "available" | "limited" | "full" | "";
   description?: string;
   contact?: {
     phone: string;
@@ -25,6 +25,7 @@ export interface Accommodation {
   rules?: string[];
   photos?: string[];
   status?: "pending" | "approved" | "rejected";
+  capacity: number;
 }
 
 const mockAccommodations: Accommodation[] = [
@@ -51,7 +52,8 @@ const mockAccommodations: Accommodation[] = [
     photos: [
       "https://images.unsplash.com/photo-1619810230359-b2c2f61c49cd?w=800&h=600&fit=crop",
       "https://images.unsplash.com/photo-1619810230359-b2c2f61c49cd?w=800&h=600&fit=crop"
-    ]
+    ],
+    capacity: 50
   },
   {
     id: "2",
@@ -79,7 +81,8 @@ const mockAccommodations: Accommodation[] = [
       "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6MTI3MDMxNDc2ODE5ODMwOTkxMA==/original/87a7faee-502a-4d34-b93c-0025f5e30365.png",
       "https://a0.muscache.com/im/pictures/hosting/Hosting-1270314768198309910/original/7d9ba1b2-6447-4f11-b781-a83a89695c53.jpeg",
       "https://a0.muscache.com/im/pictures/hosting/Hosting-1270314768198309910/original/5462f27e-db02-408c-b544-0793e8de5992.jpeg"
-    ]
+    ],
+     capacity: 50
   },
   {
     id: "3",
@@ -104,7 +107,8 @@ const mockAccommodations: Accommodation[] = [
     photos: [
       "https://images.unsplash.com/photo-1721322800607-8c38375eef04?w=800&h=600&fit=crop",
       "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800&h=600&fit=crop"
-    ]
+    ],
+     capacity: 50
   },
   {
     id: "4",
@@ -132,7 +136,8 @@ const mockAccommodations: Accommodation[] = [
       "https://a0.muscache.com/im/pictures/hosting/Hosting-1454831327322052843/original/7b246f4d-a30a-4377-9c79-c4e713086d19.jpeg",
       "https://a0.muscache.com/im/pictures/hosting/Hosting-1454831327322052843/original/5fef837c-cb8e-4135-8eb7-f48be6dd08ed.jpeg",
       "https://a0.muscache.com/im/pictures/hosting/Hosting-1454831327322052843/original/0f300a03-bdfa-4fc6-819e-09e30a8b3b59.jpeg"
-    ]
+    ],
+     capacity: 50
 
   },
   {
@@ -159,7 +164,8 @@ const mockAccommodations: Accommodation[] = [
       "https://images.unsplash.com/photo-1621891337421-af0e6b355e2f?w=1170&fit=crop",
       "https://images.unsplash.com/photo-1621891337421-af0e6b355e2f?w=1170&fit=crop",
       "https://images.unsplash.com/photo-1621891337421-af0e6b355e2f?w=1170&fit=crop"
-    ]
+    ],
+     capacity: 50
   },
 
   {
@@ -190,7 +196,8 @@ const mockAccommodations: Accommodation[] = [
       "https://a0.muscache.com/im/pictures/ab2c95e2-a8e9-4ae5-bb5b-1d25713a3bab.jpg",
       "https://a0.muscache.com/im/pictures/4ca2c01a-aef4-4a7e-bf70-e996b13f4dc8.jpg",
 
-    ]
+    ],
+     capacity: 50
   }
 
 ];
