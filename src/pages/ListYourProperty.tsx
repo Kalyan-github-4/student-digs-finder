@@ -12,241 +12,23 @@ import { useState, useRef } from "react";
 import { Accommodation, useAccommodation } from "@/contexts/AccommodationContext";
 import { useToast } from "@/hooks/use-toast";
 import { Trash2, Loader2 } from "lucide-react";
+import { usePropertyListing } from "@/hooks/usePropertyListing";
 import { Home, Upload, MapPin, IndianRupee, Users, Wifi, Car, UtensilsCrossed, Clock, Shield, Star, CheckCircle } from "lucide-react";
 
 const ListYourProperty = () => {
-  const [propertyType, setPropertyType] = useState("");
-  const [selectedAmenities, setSelectedAmenities] = useState<string[]>([]);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [draftLoading, setDraftLoading] = useState(false);
-
-  const { addAccommodation } = useAccommodation();
-  const { toast } = useToast();
-
-  // Existing state
-  const [formData, setFormData] = useState({
-    id: "",
-    title: "",
-    type: "",
-    location: "",
-    nearestCollege: "",
-    distance: "",
-    price: "",
-    priceType: "",
-    description: "",
-    availability: "",
-    amenities: [] as string[],
-    contact: {
-      owner: "",
-      phone: "",
-      email: ""
-    },
-    photos: [] as File[],
-    capacity: "",
-    agreeToTerms: false
-  });
-
-  const amenitiesList = [
-    { id: "wifi", label: "Wi-Fi", icon: Wifi },
-    { id: "parking", label: "Parking", icon: Car },
-    { id: "meals", label: "Meals", icon: UtensilsCrossed },
-    { id: "24x7", label: "24/7 Access", icon: Clock },
-    { id: "ac", label: "Air Conditioning", icon: Home },
-    { id: "security", label: "Security", icon: Shield },
-  ];
-
-  const handleAmenityChange = (amenityId: string, isChecked: boolean) => {
-    setFormData(prev => ({
-      ...prev,
-      amenities: isChecked
-        ? [...prev.amenities, amenityId] // add if checked
-        : prev.amenities.filter(id => id !== amenityId) // remove if unchecked
-    }));
-  };
-
-  // Inside the ListYourProperty component
-  const fileInputRef = useRef<HTMLInputElement | null>(null);
-
-  const handlePhotoButtonClick = () => {
-    fileInputRef.current?.click(); // Triggers file picker
-  };
-
-  const handlePhotoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = e.target.files;
-    if (files && files.length > 0) {
-      const selectedFiles = Array.from(files).slice(0, 10);
-      setFormData(prev => ({
-        ...prev,
-        photos: [...prev.photos, ...selectedFiles]
-      }));
-    }
-  };
-
-  //Implement the Draft Saving Functionality
-  const handleSaveDraft = async () => {
-    setDraftLoading(true);
-
-    try {
-      if (!formData.title || !formData.type) {
-        toast({
-          variant: "destructive",
-          title: "Missing Information",
-          description: "Please fill in all required fields before saving as draft."
-        })
-        return;
-      }
-
-      //Save to Local Storage
-      const drafts = JSON.parse(localStorage.getItem("propertyDrafts") || "[]")
-      const newDraft = {
-        ...formData,
-        id: `draft-${Date.now()}`, // Unique ID for draft
-        savedAt: new Date().toISOString()
-      };
-      localStorage.setItem("propertyDrafts", JSON.stringify([...drafts, newDraft]))
-
-      toast({
-        title: "Draft Saved",
-        description: "Your property details have been saved as a draft.",
-      });
-    }
-
-    catch (error) {
-      toast({
-        variant: "destructive",
-        title: "Error Saving Draft",
-        description: "Could not save draft. Please try again.",
-      });
-      console.error("Draft save error:", error);
-    } finally {
-      setDraftLoading(false);
-    }
-  }
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    // Basic validation
-    if (!formData.title || !formData.type || !formData.location || !formData.price) {
-      toast({
-        variant: "destructive",
-        title: "Missing Information",
-        description: "Please fill in all required fields."
-      });
-
-      return;
-    }
-
-    // Check terms agreement
-    if (!formData.agreeToTerms) {
-      toast({
-        variant: "destructive",
-        title: "Terms Not Accepted",
-        description: "Please agree to the Terms of Service and Privacy Policy."
-      });
-      return;
-    }
-
-    setIsSubmitting(true);
-
-    // Convert photos to base64
-    try {
-      const photoPromises = (formData.photos || []).map(file => {
-        return new Promise<string>((resolve, reject) => {
-          const reader = new FileReader();
-          reader.onload = (e) => resolve(e.target?.result as string);
-          reader.onerror = (error) => reject(error);
-          reader.readAsDataURL(file);
-        });
-      });
-
-      // Wait for all photos to be converted
-      const photoUrls = await Promise.all(photoPromises);
-
-      // Create new accommodation object
-      const newAccommodation: Omit<Accommodation, "id"> = {
-        title: formData.title,
-        type: formData.type as "mess" | "room" | "hostel",
-        location: formData.location,
-        distance: formData.distance,
-        price: Number(formData.price),
-        priceType: formData.priceType as "month" | "meal" | "night",
-        rating: 0, // New listings start with 0 ratings
-        reviewCount: 0,
-        image: photoUrls[0] || "", // Use first photo as main image
-        amenities: formData.amenities,
-        availability: formData.availability as "available" | "limited" | "full" | "",
-        description: formData.description,
-        contact: {
-          phone: formData.contact.phone,
-          email: formData.contact.email,
-          owner: formData.contact.owner
-        },
-        photos: photoUrls,
-        capacity: formData.capacity ? Number(formData.capacity) : 0,
-        rules: [] // Can be added later
-      };
-
-
-      // Add to context
-      const createdAccommodation = await addAccommodation(newAccommodation);
-
-      // If this was a draft being submitted, remove it
-      if (formData.id?.startsWith('draft-')) {
-        const drafts: Accommodation[] = JSON.parse(localStorage.getItem('propertyDrafts') || '[]');
-        const updatedDrafts = drafts.filter(d => d.id !== formData.id);
-        localStorage.setItem('propertyDrafts', JSON.stringify(updatedDrafts));
-      }
-      // Show success message
-      toast({
-        title: "Property Listed!",
-        description: "Your property has been submitted for review."
-      });
-
-      // Reset form
-      setFormData({
-        id: "",
-        title: "",
-        type: "",
-        location: "",
-        nearestCollege: "",
-        distance: "",
-        price: "",
-        priceType: "",
-        description: "",
-        amenities: [],
-        availability: "",
-        contact: {
-          owner: "",
-          phone: "",
-          email: ""
-        },
-        photos: [],
-        capacity: "",
-        agreeToTerms: false
-      });
-
-    } catch (error) {
-      toast({
-        variant: "destructive",
-        title: "Error",
-        description: "Failed to list property. Please try again."
-      });
-      console.error("Submission error:", error)
-    } finally {
-      setIsSubmitting(false)
-    }
-  }
-
-  // // Update your form inputs to use formData state
-  // // Example for property name input:
-  // <Input
-  //   id="property-name"
-  //   value={formData.title}
-  //   onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-  //   placeholder="e.g., Green View Boys Hostel, Raj Mess"
-  //   className="mt-1"
-  // />
+  const {
+    formData,
+    setFormData,
+    handleSubmit,
+    handleSaveDraft,
+    isSubmitting,
+    draftLoading,
+    amenitiesList,
+    handleAmenityChange,
+    fileInputRef,
+    handlePhotoButtonClick,
+    handlePhotoUpload
+  } = usePropertyListing();
 
   return (
     <div className="min-h-screen bg-background">
@@ -369,16 +151,16 @@ const ListYourProperty = () => {
 
                     <div>
                       <Label htmlFor="address">Full Address *</Label>
-                      <div  className="relative mt-1">
-                      <MapPin className="absolute left-3 top-3 h-4 w-4 text-muted-foreground"/>
-                      <Textarea
-                        id="address"
-                        value={formData.location}
-                        onChange={(e) => setFormData({ ...formData, location: e.target.value })}
-                        placeholder="Enter complete address with landmarks"
-                        className="mt-2 pl-10"
-                        required
-                      />
+                      <div className="relative mt-1">
+                        <MapPin className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                        <Textarea
+                          id="address"
+                          value={formData.location}
+                          onChange={(e) => setFormData({ ...formData, location: e.target.value })}
+                          placeholder="Enter complete address with landmarks"
+                          className="mt-2 pl-10"
+                          required
+                        />
 
                       </div>
                     </div>
