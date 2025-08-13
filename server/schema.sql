@@ -1,31 +1,20 @@
-CREATE TABLE users (
+CREATE TABLE IF NOT EXISTS property_listings (
   id SERIAL PRIMARY KEY,
-  name VARCHAR(100),
-  email VARCHAR(100) UNIQUE NOT NULL,
-  password_hash VARCHAR(200) NOT NULL
-);
-
-CREATE TABLE hotels (
-  id SERIAL PRIMARY KEY,
-  name VARCHAR(200),
-  location VARCHAR(200)
-);
-
-CREATE TABLE rooms (
-  id SERIAL PRIMARY KEY,
-  hotel_id INT REFERENCES hotels(id) ON DELETE CASCADE,
-  name VARCHAR(100),
-  price_per_night NUMERIC(10,2),
-  capacity INT
-);
-
-CREATE TABLE bookings (
-  id SERIAL PRIMARY KEY,
-  user_id INT REFERENCES users(id),
-  room_id INT REFERENCES rooms(id),
-  check_in DATE NOT NULL,
-  check_out DATE NOT NULL,
-  status VARCHAR(50) DEFAULT 'confirmed',
-  created_at TIMESTAMPTZ DEFAULT now(),
-  CONSTRAINT chk_dates CHECK (check_out > check_in)
+  title VARCHAR(255) NOT NULL,
+  type VARCHAR(50) NOT NULL CHECK (type IN ('mess', 'hostel', 'room')),
+  location TEXT NOT NULL,
+  nearest_college VARCHAR(255),
+  distance VARCHAR(50),
+  price DECIMAL(10, 2) NOT NULL,
+  price_type VARCHAR(20) NOT NULL CHECK (price_type IN ('month', 'meal', 'night')),
+  description TEXT,
+  amenities TEXT[],
+  availability VARCHAR(20) DEFAULT 'available',
+  owner_name VARCHAR(100) NOT NULL,
+  owner_phone VARCHAR(20) NOT NULL,
+  owner_email VARCHAR(100) NOT NULL,
+  capacity INTEGER,
+  photos TEXT[],
+  created_at TIMESTAMP DEFAULT NOW(),
+  updated_at TIMESTAMP DEFAULT NOW()
 );
