@@ -64,6 +64,7 @@ const AccommodationGrid = () => {
             <AccommodationCard
               key={accommodation.id}
               {...accommodation}
+                isPending={accommodation.status === 'pending'}
             />
           ))}
         </div>

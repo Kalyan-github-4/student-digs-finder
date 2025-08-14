@@ -16,7 +16,8 @@ interface AccommodationCardProps {
   reviewCount: number;
   image: string;
   amenities: string[];
-  availability: "available" | "limited" | "full";
+  availability:"available" | "limited" | "full" | "";
+  isPending?: boolean;
 }
 
 const AccommodationCard = ({
@@ -31,7 +32,8 @@ const AccommodationCard = ({
   reviewCount,
   image,
   amenities,
-  availability
+  availability,
+  isPending = false
 }: AccommodationCardProps) => {
   const navigate = useNavigate();
   const typeColors = {
@@ -55,7 +57,16 @@ const AccommodationCard = ({
   };
 
   return (
-    <Card className="group overflow-hidden border-0 shadow-card hover:shadow-hover transition-all duration-300 hover:-translate-y-1">
+    <Card className={`group overflow-hidden border-0 shadow-card hover:shadow-hover transition-all duration-300 hover:-translate-y-1 ${isPending ? "opacity-70" : ""}`}>
+       {/* Pending overlay */}
+      {isPending && (
+        <div className="absolute inset-0 bg-background/50 flex items-center justify-center z-10">
+          <p className="text-sm bg-secondary px-2 py-1 rounded">
+            Pending Approval
+          </p>
+        </div> 
+      )}
+
       <div className="relative">
         <img
           src={image}

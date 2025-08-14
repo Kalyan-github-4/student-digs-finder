@@ -46,8 +46,48 @@ const createProperty = async (req, res) => {
       availability || 'available'
     ];
 
-    const result = await db.query(query, values);
-    res.status(201).json(result.rows[0]);
+    const dbResult = await db.query(query, values);
+     const savedProperty = dbResult.rows[0];
+
+     const responseData = {
+      id: savedProperty.id,
+      title: savedProperty.title,
+      type: savedProperty.type,
+      location: savedProperty.location,
+      nearestCollege: savedProperty.nearest_college,
+      distance: savedProperty.distance,
+      price: savedProperty.price,
+      priceType: savedProperty.price_type,
+      description: savedProperty.description,
+      amenities: savedProperty.amenities,
+      availability: savedProperty.availability,
+      contact: {
+        owner: savedProperty.owner_name,
+        phone: savedProperty.owner_phone,
+        email: savedProperty.owner_email
+      },
+      photos: savedProperty.photos,
+      capacity: savedProperty.capacity,
+      // Frontend required fields
+      rating: 0,
+      reviewCount: 0,
+      image: savedProperty.photos?.[0] || '', // Use first photo as main image
+      status: 'pending',
+      rules: [],
+      // Database timestamps
+      created_at: savedProperty.created_at,
+      updated_at: savedProperty.updated_at
+    };
+
+    res.status(201).json({
+      
+      ...savedProperty,
+      rating: 0,
+      reviewCount: 0,
+      image: savedProperty.photos[0] || '',
+      status: 'pending',
+      rules: []
+    });
     
   } catch (error) {
     console.error('Error saving property:', error);

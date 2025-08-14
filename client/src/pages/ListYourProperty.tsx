@@ -204,7 +204,7 @@ const ListYourProperty = () => {
                           <Input
                             id="price"
                             value={formData.price}
-                            onChange={(e) => setFormData({ ...formData, price: e.target.value })}
+                            onChange={(e) => setFormData({ ...formData, price: (e.target.value) })}
                             placeholder="Enter amount"
                             className="pl-10"
                             type="number"
@@ -240,7 +240,7 @@ const ListYourProperty = () => {
                           className="pl-10"
                           type="number"
                           value={formData.capacity}
-                          onChange={(e) => setFormData({ ...formData, capacity: e.target.value })}
+                          onChange={(e) => setFormData({ ...formData, capacity:( e.target.value )})}
                           required
                         />
                       </div>

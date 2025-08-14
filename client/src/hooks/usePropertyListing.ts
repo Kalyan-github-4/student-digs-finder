@@ -58,7 +58,8 @@ export const usePropertyListing = () => {
     },
     photos: [] as File[],
     capacity: "",
-    agreeToTerms: false
+    agreeToTerms: false,
+    status: "pending"
   });
 
   const amenitiesList = [
@@ -163,54 +164,28 @@ export const usePropertyListing = () => {
 
     // Convert photos to base64
     try {
-      const photoPromises = (formData.photos || []).map(file => {
+      const photoPromises = await Promise.all( (formData.photos || []).map(file => {
         return new Promise<string>((resolve, reject) => {
           const reader = new FileReader();
           reader.onload = (e) => resolve(e.target?.result as string);
           reader.onerror = (error) => reject(error);
           reader.readAsDataURL(file);
         });
-      });
+      }));
 
       // Wait for all photos to be converted
       const photoUrls = await Promise.all(photoPromises);
-
-      const response = await fetch("/api/properties", {
-        method: "POST",
-        headers: { 
-          "Content-Type" : "application/json",
-        },
-        body: JSON.stringify({
-          ...formData,
-           photos: photoUrls,
-          contact: {
-            owner: formData.contact.owner,
-            phone: formData.contact.phone,
-            email: formData.contact.email
-        }
-        }),
-      });
-
-      if(!response.ok){
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      toast({
-      title: "Property Listed!",
-      description: "Your property has been successfully saved.",
-    });
-
       // Create new accommodation object
-      const newAccommodation: Omit<Accommodation, "id"> = {
+      const payload = {
         title: formData.title,
         type: formData.type as "mess" | "room" | "hostel",
         location: formData.location,
         distance: formData.distance,
         price: Number(formData.price),
         priceType: formData.priceType as "month" | "meal" | "night",
-        rating: 0, // New listings start with 0 ratings
+        rating: 0,
         reviewCount: 0,
-        image: photoUrls[0] || "", // Use first photo as main image
+        image: photoUrls[0] || "",
         amenities: formData.amenities,
         availability: formData.availability as "available" | "limited" | "full" | "",
         description: formData.description,
@@ -221,12 +196,31 @@ export const usePropertyListing = () => {
         },
         photos: photoUrls,
         capacity: formData.capacity ? Number(formData.capacity) : 0,
-        rules: [] // Can be added later
+        rules: [],
+        status: "pending"
+
       };
 
+      const response = await fetch("http://localhost:5000/api/properties", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
 
-      // Add to context
-      const createdAccommodation = await addAccommodation(newAccommodation);
+      if (!response.ok) {
+         const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.message || "Failed to save property");
+      }
+
+      const responseData = await response.json();
+      addAccommodation(responseData);
+
+      toast({
+        title: "Property Listed!",
+        description: "Your property has been successfully saved.",
+      });
 
       // If this was a draft being submitted, remove it
       if (formData.id?.startsWith('draft-')) {
@@ -234,11 +228,6 @@ export const usePropertyListing = () => {
         const updatedDrafts = drafts.filter(d => d.id !== formData.id);
         localStorage.setItem('propertyDrafts', JSON.stringify(updatedDrafts));
       }
-      // Show success message
-      toast({
-        title: "Property Listed!",
-        description: "Your property has been submitted for review."
-      });
 
       // Reset form
       setFormData({
@@ -260,14 +249,15 @@ export const usePropertyListing = () => {
         },
         photos: [],
         capacity: "",
-        agreeToTerms: false
+        agreeToTerms: false,
+        status: "pending"
       });
 
     } catch (error) {
       toast({
         variant: "destructive",
         title: "Error",
-        description: "Failed to list property. Please try again."
+        description: error instanceof Error ? error.message : "Failed to submit property"
       });
       console.error("Submission error:", error)
     } finally {
