@@ -1,6 +1,8 @@
 const db = require('../db');
 
 const createProperty = async (req, res) => {
+
+
   try {
     const {
       title,
@@ -27,7 +29,7 @@ const createProperty = async (req, res) => {
       ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15)
       RETURNING *
     `;
-
+  console.log("Incoming property data:", req.body);
     const values = [
       title,
       type,
@@ -45,6 +47,7 @@ const createProperty = async (req, res) => {
       photos || [],
       availability || 'available'
     ];
+console.log("Values for DB insert:", values);
 
     const dbResult = await db.query(query, values);
      const savedProperty = dbResult.rows[0];
@@ -91,7 +94,7 @@ const createProperty = async (req, res) => {
     
   } catch (error) {
     console.error('Error saving property:', error);
-    res.status(500).json({ error: 'Failed to save property', details: error.message });
+    res.status(500).json({ error: 'Failed to save property', details: error.stack });
   }
 };
 

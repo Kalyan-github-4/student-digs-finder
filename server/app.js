@@ -12,8 +12,8 @@ app.use(cors({
 }));
 
 //Middleware
-app.use(bodyparser.json());
-app.use(bodyparser.urlencoded({extended: true}));
+app.use(bodyparser.json({limit: '20mb'})); // Increased limit for large property data
+app.use(bodyparser.urlencoded({ limit: '20mb',extended: true}));
 
 //Routes
 app.post("/api/properties", propertyController.createProperty);

@@ -200,22 +200,35 @@ export const usePropertyListing = () => {
         status: "pending"
 
       };
+      console.log("Payload being sent to backend:", payload);
 
+      //Send to Back-end
       const response = await fetch("http://localhost:5000/api/properties", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": "application/json"
         },
         body: JSON.stringify(payload),
       });
+console.log("Sending to API:", formData);
 
       if (!response.ok) {
          const errorData = await response.json().catch(() => ({}));
         throw new Error(errorData.message || "Failed to save property");
       }
 
-      const responseData = await response.json();
-      addAccommodation(responseData);
+      //Get the saved data from backend
+      const savedProperty = await response.json();
+
+      // const responseData = await response.json();
+      addAccommodation(
+        {
+      ...savedProperty,
+      image: savedProperty.photos[0] || "", // Set main image
+      rating: 0, // Default values
+      reviewCount: 0
+    }
+      );
 
       toast({
         title: "Property Listed!",
