@@ -98,6 +98,49 @@ console.log("Values for DB insert:", values);
   }
 };
 
+// New: Get all properties
+const getProperties = async (req, res) => {
+  try {
+    const query = `SELECT * FROM property_listings ORDER BY created_at DESC`;
+    const result = await db.query(query);
+
+    // Format rows for frontend
+    const properties = result.rows.map(p => ({
+      id: p.id,
+      title: p.title,
+      type: p.type,
+      location: p.location,
+      nearestCollege: p.nearest_college,
+      distance: p.distance,
+      price: p.price,
+      priceType: p.price_type,
+      description: p.description,
+      amenities: p.amenities || [],
+      availability: p.availability,
+      contact: {
+        owner: p.owner_name,
+        phone: p.owner_phone,
+        email: p.owner_email
+      },
+      photos: p.photos || [],
+      capacity: p.capacity,
+      rating: 0,
+      reviewCount: 0,
+      image: p.photos?.[0] || "",
+      status: "pending",
+      rules: [],
+      created_at: p.created_at,
+      updated_at: p.updated_at
+    }));
+
+    res.json(properties);
+  } catch (error) {
+    console.error("Error fetching properties:", error);
+    res.status(500).json({ error: "Failed to fetch properties" });
+  }
+};
+
 module.exports = {
-  createProperty
+  createProperty,
+  getProperties
 };
