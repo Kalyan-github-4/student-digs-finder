@@ -27,10 +27,10 @@ export interface propertyFormData {
   };
   rules: string[];
   photos: string[];
-  status: "pending" | "approved" | "rejected";
   capacity: number;
   isPending?: boolean;
   agreeToTerms?: boolean;
+  status?: "approved" | "pending" | "rejected";
 }
 
 
@@ -62,7 +62,8 @@ export const usePropertyListing = () => {
     photos: [] as File[],
     capacity: "",
     agreeToTerms: false,
-    status: "pending"
+    status: "approved" // Default status 
+  
   });
 
   const amenitiesList = [
@@ -200,7 +201,7 @@ export const usePropertyListing = () => {
         photos: photoUrls,
         capacity: formData.capacity ? Number(formData.capacity) : 0,
         rules: [],
-        status: "pending"
+        status: "approved"
 
       };
       console.log("Payload being sent to backend:", payload);
@@ -227,6 +228,7 @@ export const usePropertyListing = () => {
       addAccommodation(
         {
           ...savedProperty,
+          status: "approved",
           image: savedProperty.photos[0] || "", // Set main image
           rating: 0, // Default values
           reviewCount: 0
@@ -266,7 +268,7 @@ export const usePropertyListing = () => {
         photos: [],
         capacity: "",
         agreeToTerms: false,
-        status: "pending"
+        status: "approved"
       });
 
     } catch (error) {
