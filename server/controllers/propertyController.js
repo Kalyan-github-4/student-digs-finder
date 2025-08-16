@@ -75,22 +75,14 @@ console.log("Values for DB insert:", values);
       rating: 0,
       reviewCount: 0,
       image: savedProperty.photos?.[0] || '', // Use first photo as main image
-      status: 'pending',
+      status: 'approved',
       rules: [],
       // Database timestamps
       created_at: savedProperty.created_at,
       updated_at: savedProperty.updated_at
     };
 
-    res.status(201).json({
-      
-      ...savedProperty,
-      rating: 0,
-      reviewCount: 0,
-      image: savedProperty.photos[0] || '',
-      status: 'pending',
-      rules: []
-    });
+    res.status(201).json(responseData);
     
   } catch (error) {
     console.error('Error saving property:', error);
@@ -127,7 +119,7 @@ const getProperties = async (req, res) => {
       rating: 0,
       reviewCount: 0,
       image: p.photos?.[0] || "",
-      status: "pending",
+      status: "approved",
       rules: [],
       created_at: p.created_at,
       updated_at: p.updated_at
