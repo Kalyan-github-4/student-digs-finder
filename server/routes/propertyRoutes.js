@@ -1,5 +1,5 @@
 const express = require("express");
-const { createProperty, getProperties } = require("./controllers/propertyController");
+const { createProperty, getProperties } = require("../controllers/propertyController");
 
 const router = express.Router();
 
