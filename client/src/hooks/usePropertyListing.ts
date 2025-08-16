@@ -1,5 +1,6 @@
 import { useState, useRef } from "react";
-import { Accommodation, useAccommodation } from "@/contexts/AccommodationContext";
+import { Accommodation } from "@/contexts/AccommodationContext";
+import { useAccommodation } from "@/hooks/useAccommodation";
 import { useToast } from "@/hooks/use-toast";
 import { Trash2 } from "lucide-react";
 import { Home, Upload, MapPin, IndianRupee, Users, Wifi, Car, UtensilsCrossed, Clock, Shield, Star, CheckCircle } from "lucide-react";
@@ -10,7 +11,7 @@ export interface propertyFormData {
   type: "mess" | "room" | "hostel";
   location: string;
   nearestCollege?: string;
-  distance: string;
+  distance: number;
   price: number;
   priceType: "month" | "meal" | "night";
   rating: number;
@@ -28,6 +29,8 @@ export interface propertyFormData {
   photos: string[];
   status: "pending" | "approved" | "rejected";
   capacity: number;
+  isPending?: boolean;
+  agreeToTerms?: boolean;
 }
 
 
