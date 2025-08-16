@@ -1,5 +1,5 @@
 import AccommodationCard from "./AccommodationCard";
-import { useAccommodation } from "@/contexts/AccommodationContext";
+import { useAccommodation } from "@/hooks/useAccommodation";
 import { Button } from "@/components/ui/button";
 import { ChevronRightIcon, ChevronLeftIcon } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
