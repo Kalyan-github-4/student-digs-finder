@@ -2,7 +2,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
-import { useAccommodation } from "@/contexts/AccommodationContext";
+import { useAccommodation } from "@/hooks/useAccommodation";
 import { ArrowLeft, MapPin, Star, Phone, Mail, User, CheckCircle, Info } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
