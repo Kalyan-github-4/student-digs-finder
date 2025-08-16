@@ -1,6 +1,4 @@
-import { error } from 'console';
 import { createContext, useContext, useState, ReactNode, useEffect } from 'react';
-import { json } from 'stream/consumers';
 
 export interface Accommodation {
   id: string;

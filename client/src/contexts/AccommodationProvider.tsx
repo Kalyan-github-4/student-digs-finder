@@ -34,36 +34,39 @@ const mockAccommodations: Accommodation[] = [
 export const AccommodationProvider = ({ children }: { children: ReactNode }) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [accommodations, setAccommodations] = useState<Accommodation[]>(mockAccommodations);
-
-  //Load from localStorage on initial render
-  useEffect(() => {
-    const saved = localStorage.getItem("accommodations");
-    if (saved) {
-      try {
-        const parsed = JSON.parse(saved);
-        setAccommodations(parsed);
-      } catch (error) {
-        console.error("Failed to parse accommodations from localStorage", error);
+useEffect(() => {
+  const fetchAccommodations = async () => {
+    try {
+      const res = await fetch("http://localhost:5000/api/accommodations");
+      const data = await res.json();
+      setAccommodations(data);
+    } catch (err) {
+      console.error("Falling back to localStorage:", err);
+      const saved = localStorage.getItem("accommodations");
+      if (saved) {
+        try {
+          setAccommodations(JSON.parse(saved));
+        } catch (parseError) {
+          console.error("Failed to parse accommodations from localStorage:", parseError);
+        }
       }
     }
-  }, [])
+  };
+  fetchAccommodations();
+}, []);
 
-  //Save to localStorage whenever accommodations change
-  useEffect(() => {
-    localStorage.setItem("acomodations", JSON.stringify(accommodations));
-  }, [accommodations])
-
-  const filteredAccommodations = mockAccommodations.filter(accommodation =>
+ // Filtering logic
+  const filteredAccommodations = accommodations.filter(accommodation =>
     accommodation.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
     accommodation.location.toLowerCase().includes(searchQuery.toLowerCase()) ||
     accommodation.type.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    accommodation.amenities.some(amenity =>
+    (accommodation.amenities || []).some(amenity =>
       amenity.toLowerCase().includes(searchQuery.toLowerCase())
     )
   );
 
   const getAccommodationById = (id: string) => {
-    return mockAccommodations.find(acc => acc.id === id);
+    return accommodations.find(acc => acc.id === id);
   };
 
   const addAccommodation = (newAccommodation: Omit<Accommodation, 'id'>) => {

@@ -167,7 +167,7 @@ export const usePropertyListing = () => {
 
     // Convert photos to base64
     try {
-      const photoPromises = await Promise.all( (formData.photos || []).map(file => {
+      const photoPromises = await Promise.all((formData.photos || []).map(file => {
         return new Promise<string>((resolve, reject) => {
           const reader = new FileReader();
           reader.onload = (e) => resolve(e.target?.result as string);
@@ -213,10 +213,10 @@ export const usePropertyListing = () => {
         },
         body: JSON.stringify(payload),
       });
-console.log("Sending to API:", formData);
+      console.log("Sending to API:", formData);
 
       if (!response.ok) {
-         const errorData = await response.json().catch(() => ({}));
+        const errorData = await response.json().catch(() => ({}));
         throw new Error(errorData.message || "Failed to save property");
       }
 
@@ -226,11 +226,11 @@ console.log("Sending to API:", formData);
       // const responseData = await response.json();
       addAccommodation(
         {
-      ...savedProperty,
-      image: savedProperty.photos[0] || "", // Set main image
-      rating: 0, // Default values
-      reviewCount: 0
-    }
+          ...savedProperty,
+          image: savedProperty.photos[0] || "", // Set main image
+          rating: 0, // Default values
+          reviewCount: 0
+        }
       );
 
       toast({
