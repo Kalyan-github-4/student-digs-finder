@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Search, MapPin, Calendar, Users } from "lucide-react";
-import { useAccommodation } from "@/contexts/AccommodationContext";
+import { useAccommodation } from "@/hooks/useAccommodation";
 import heroImage from "@/assets/hero-campus.jpg";
 
 const HeroSection = () => {
