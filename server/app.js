@@ -1,6 +1,6 @@
 const express = require('express');
 const bodyparser = require('body-parser');
-const propertyController = require('./controllers/propertyController');
+const propertyRoutes = require('./routes/propertyRoutes');
 const cors = require('cors');
 const app = express();
 
@@ -16,7 +16,7 @@ app.use(bodyparser.json({limit: '20mb'})); // Increased limit for large property
 app.use(bodyparser.urlencoded({ limit: '20mb',extended: true}));
 
 //Routes
-app.post("/api/properties", propertyController.createProperty);
+app.use("/api/properties", propertyRoutes)
 
 //Error
 app.use((err, req, res, next) => {
