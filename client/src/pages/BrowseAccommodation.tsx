@@ -5,7 +5,7 @@ import AccommodationGrid from "@/components/AccommodationGrid";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Search, Filter, SortAsc } from "lucide-react";
-import { useAccommodation } from "@/contexts/AccommodationContext";
+import { useAccommodation } from "@/hooks/useAccommodation";
 
 const BrowseAccommodation = () => {
   const { searchQuery, setSearchQuery } = useAccommodation();
