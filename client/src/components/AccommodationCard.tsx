@@ -9,15 +9,26 @@ interface AccommodationCardProps {
   title: string;
   type: "mess" | "room" | "hostel";
   location: string;
-  distance: string;
+  nearestCollege?: string;
+  distance: number | string;
   price: number;
   priceType: "month" | "meal" | "night";
   rating: number;
-  reviewCount: number;
-  image: string;
+  reviewCount?: number;
+  image?: string;
   amenities: string[];
-  availability:"available" | "limited" | "full" | "";
-  isPending?: boolean;
+  availability?: "available" | "limited" | "full" | "";
+  description?: string;
+  contact?: {
+    phone: string;
+    email: string;
+    owner: string;
+  };
+  rules?: string[];
+  photos?: string[];
+  status?: "pending" | "approved" | "rejected";
+  capacity: number;
+  isPending?: boolean
 }
 
 const AccommodationCard = ({
