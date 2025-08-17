@@ -54,7 +54,7 @@ console.log("Values for DB insert:", values);
      const savedProperty = dbResult.rows[0];
 
      const responseData = {
-      id: savedProperty.id,
+      id: String(savedProperty.id),
       title: savedProperty.title,
       type: savedProperty.type,
       location: savedProperty.location,
@@ -99,7 +99,7 @@ const getProperties = async (req, res) => {
 
     // Format rows for frontend
     const properties = result.rows.map(p => ({
-      id: p.id,
+      id: String(p.id),
       title: p.title,
       type: p.type,
       location: p.location,
