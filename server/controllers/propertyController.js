@@ -25,8 +25,8 @@ const createProperty = async (req, res) => {
         title, type, location, nearest_college, distance,
         price, price_type, description, amenities,
         owner_name, owner_phone, owner_email,
-        capacity, photos, availability
-      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15)
+        capacity, photos, availability, status
+      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16)
       RETURNING *
     `;
   console.log("Incoming property data:", req.body);
@@ -45,7 +45,8 @@ const createProperty = async (req, res) => {
       contact.email,
       capacity ? parseInt(capacity) : null,
       photos || [],
-      availability || 'available'
+      availability || 'available',
+      "approved"
     ];
 console.log("Values for DB insert:", values);
 
@@ -119,7 +120,7 @@ const getProperties = async (req, res) => {
       rating: 0,
       reviewCount: 0,
       image: p.photos?.[0] || "",
-      status: "approved",
+      status: p.status,
       rules: [],
       created_at: p.created_at,
       updated_at: p.updated_at
