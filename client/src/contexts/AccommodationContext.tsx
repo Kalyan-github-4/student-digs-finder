@@ -63,7 +63,8 @@ export const AccommodationProvider = ({ children }: { children: ReactNode }) => 
     if (!searchQuery.trim()) return accommodations;
     return accommodations.filter((acc) =>
       acc.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      acc.location.toLowerCase().includes(searchQuery.toLowerCase())
+      acc.location.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      acc.nearestCollege?.toLowerCase().includes(searchQuery.toLowerCase()) 
     );
   }, [accommodations, searchQuery]);
 
