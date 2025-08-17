@@ -185,6 +185,7 @@ export const usePropertyListing = () => {
         type: formData.type as "mess" | "room" | "hostel",
         location: formData.location,
         distance: formData.distance,
+        nearestCollege: formData.nearestCollege, 
         price: Number(formData.price),
         priceType: formData.priceType as "month" | "meal" | "night",
         rating: 0,
