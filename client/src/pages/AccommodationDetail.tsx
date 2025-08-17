@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { useAccommodation } from "@/hooks/useAccommodation";
-import { ArrowLeft, MapPin, Star, Phone, Mail, User, CheckCircle, Info } from "lucide-react";
+import { ArrowLeft, MapPin, Star, Phone, Mail, User, CheckCircle, Info, Building2 } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
@@ -11,7 +11,7 @@ const AccommodationDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { getAccommodationById } = useAccommodation();
-  
+
   const accommodation = getAccommodationById(id!);
 
   if (!accommodation) {
@@ -42,7 +42,7 @@ const AccommodationDetail = () => {
   return (
     <div className="min-h-screen bg-background">
       <Header />
-      
+
       <div className="container mx-auto px-4 py-8">
         <Button
           variant="ghost"
@@ -73,7 +73,7 @@ const AccommodationDetail = () => {
                 </Badge>
               </div>
             </div>
-            
+
             {accommodation.photos && accommodation.photos.length > 1 && (
               <div className="grid grid-cols-3 gap-2">
                 {accommodation.photos.slice(1).map((photo, index) => (
@@ -94,11 +94,18 @@ const AccommodationDetail = () => {
               <h1 className="text-3xl font-bold text-foreground mb-2">
                 {accommodation.title}
               </h1>
-              
-              <div className="flex items-center text-muted-foreground mb-4">
-                <MapPin className="h-5 w-5 mr-2" />
-                <span>{accommodation.location} • {accommodation.distance}</span>
+
+              <div className="mb-4">
+                <div className="flex items-center text-muted-foreground mb-1">
+                  <Building2 className="h-5 w-5 mr-2" />
+                  <span>{accommodation.nearestCollege} • {accommodation.distance}</span>
+                </div>
+                <div className="flex items-center text-muted-foreground">
+                  <MapPin className="h-5 w-5 mr-2" />
+                  <span>{accommodation.location}</span>
+                </div>
               </div>
+
 
               <div className="flex items-center mb-4">
                 <Star className="h-5 w-5 text-warning mr-1 fill-current" />
@@ -192,7 +199,7 @@ const AccommodationDetail = () => {
           </div>
         </div>
       </div>
-      
+
       <Footer />
     </div>
   );
