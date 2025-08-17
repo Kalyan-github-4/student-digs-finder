@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
-import { MapPin, Star, Wifi, Car, UtensilsCrossed, Clock, Users } from "lucide-react";
+import { MapPin, Star, Wifi, Car, UtensilsCrossed, Clock, Users, Building2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 interface AccommodationCardProps {
@@ -36,6 +36,7 @@ const AccommodationCard = ({
   title,
   type,
   location,
+  nearestCollege,
   distance,
   price,
   priceType,
@@ -69,13 +70,13 @@ const AccommodationCard = ({
 
   return (
     <Card className={`group overflow-hidden border-0 shadow-card hover:shadow-hover transition-all duration-300 hover:-translate-y-1 ${isPending ? "opacity-70" : ""}`}>
-       {/* Pending overlay */}
+      {/* Pending overlay */}
       {isPending && (
         <div className="absolute inset-0 bg-background/50 flex items-center justify-center z-10">
           <p className="text-sm bg-secondary px-2 py-1 rounded">
             Pending Approval
           </p>
-        </div> 
+        </div>
       )}
 
       <div className="relative">
@@ -100,10 +101,16 @@ const AccommodationCard = ({
         <h3 className="font-semibold text-lg text-foreground mb-2 line-clamp-1">
           {title}
         </h3>
-        
-        <div className="flex items-center text-muted-foreground mb-2">
-          <MapPin className="h-4 w-4 mr-1" />
-          <span className="text-sm">{location} • {distance}</span>
+
+        <div>
+          <div className="flex items-center text-muted-foreground mb-1">
+            <Building2 className="h-4 w-4 mr-1" />
+            <span className="text-sm">{nearestCollege} • {distance}km</span>
+          </div>
+          <div className="flex items-center text-muted-foreground">
+            <MapPin className="h-4 w-4 mr-1" />
+            <span className="text-sm">{location}</span>
+          </div>
         </div>
 
         <div className="flex items-center mb-3">
@@ -136,8 +143,8 @@ const AccommodationCard = ({
             <span className="text-2xl font-bold text-foreground">₹{price}</span>
             <span className="text-muted-foreground text-sm">/{priceType}</span>
           </div>
-          <Button 
-            variant="default" 
+          <Button
+            variant="default"
             size="sm"
             onClick={() => navigate(`/accommodation/${id}`)}
           >
