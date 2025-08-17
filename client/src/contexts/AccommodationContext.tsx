@@ -44,6 +44,20 @@ export const AccommodationProvider = ({ children }: { children: ReactNode }) => 
   const [accommodations, setAccommodations] = useState<Accommodation[]>([]);
   const [searchQuery, setSearchQuery] = useState<string>("");
 
+  // ✅ fetch data from backend when provider mounts
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch("http://localhost:5000/api/properties"); // <-- your backend route
+        const data: Accommodation[] = await response.json();
+        setAccommodations(data);
+      } catch (error) {
+        console.error("Failed to fetch accommodations:", error);
+      }
+    };
+    fetchData();
+  }, []);
+
   //filter based on searchQuery
   const filteredAccommodations = useMemo(() => {
     if (!searchQuery.trim()) return accommodations;
@@ -52,18 +66,19 @@ export const AccommodationProvider = ({ children }: { children: ReactNode }) => 
       acc.location.toLowerCase().includes(searchQuery.toLowerCase())
     );
   }, [accommodations, searchQuery]);
+
 // 🔑 find accommodation by id
   const getAccommodationById = (id: string) =>
     accommodations.find((acc) => acc.id === id);
 
   // ➕ add new accommodation
-  const addAccommodation = (newAccommodation: Omit<Accommodation, "id">) => {
-    const id = Date.now().toString(); // simple unique id
-    setAccommodations((prev) => [...prev, { ...newAccommodation, id }]);
-  };
+ const addAccommodation = (newAccommodation: Accommodation) => {
+  setAccommodations((prev) => [...prev, newAccommodation]);
+};
 
   return (
-    <AccommodationContext.Provider value={{ accommodations,
+    <AccommodationContext.Provider value={{ 
+        accommodations,
         setAccommodations,
         searchQuery,
         setSearchQuery,
