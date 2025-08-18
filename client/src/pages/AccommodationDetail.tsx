@@ -98,7 +98,7 @@ const AccommodationDetail = () => {
               <div className="mb-4">
                 <div className="flex items-center text-muted-foreground mb-1">
                   <Building2 className="h-5 w-5 mr-2" />
-                  <span>{accommodation.nearestCollege} • {accommodation.distance}</span>
+                  <span>{accommodation.nearestCollege} → {accommodation.distance}km</span>
                 </div>
                 <div className="flex items-center text-muted-foreground">
                   <MapPin className="h-5 w-5 mr-2" />
