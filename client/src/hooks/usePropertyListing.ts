@@ -208,7 +208,7 @@ export const usePropertyListing = () => {
       console.log("Payload being sent to backend:", payload);
 
       //Send to Back-end
-      const response = await fetch("http://localhost:5000/api/properties", {
+      const response = await fetch("https://student-digs-finder.onrender.com/api/properties", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
