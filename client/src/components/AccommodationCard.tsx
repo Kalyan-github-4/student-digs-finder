@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
-import { MapPin, Star, Wifi, Car, UtensilsCrossed, Clock, Users, Building2 } from "lucide-react";
+import { MapPin, Star, Wifi, Car, UtensilsCrossed, Clock, Users, Building2, MoveRight  } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 interface AccommodationCardProps {
@@ -105,7 +105,7 @@ const AccommodationCard = ({
         <div>
           <div className="flex items-center text-muted-foreground mb-1">
             <Building2 className="h-4 w-4 mr-1" />
-            <span className="text-sm">{nearestCollege} • {distance}km</span>
+            <span className="text-sm">{nearestCollege} → {distance}km</span>
           </div>
           <div className="flex items-center text-muted-foreground">
             <MapPin className="h-4 w-4 mr-1" />
