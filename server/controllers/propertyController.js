@@ -1,3 +1,5 @@
+//PROPERTYCONTROLLER.JS
+
 const db = require('../db');
 
 const createProperty = async (req, res) => {

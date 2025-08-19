@@ -1,3 +1,5 @@
+//PROPERTYROUTES.JS
+
 const express = require("express");
 const { createProperty, getProperties } = require("../controllers/propertyController");
 

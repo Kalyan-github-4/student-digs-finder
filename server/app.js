@@ -6,7 +6,12 @@ const app = express();
 const path = require("path");
 
 app.use(cors({
-  origin: 'http://localhost:8080', 
+  origin: [
+     "http://localhost:5173", 
+    "http://localhost:8080",
+    "https://student-digs-finder-1.onrender.com"
+  ],
+
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
   allowedHeaders: ['Content-Type', 'Authorization']
@@ -21,11 +26,12 @@ app.use(bodyparser.urlencoded({ limit: '20mb',extended: true}));
 app.use("/api/properties", propertyRoutes)
 
 
-// app.use(express.static(path.join(__dirname, "client/build")));
-
-// app.get("*", (req, res) => {
-//   res.sendFile(path.join(__dirname, "client/build", "index.html"));
-// });
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.join(__dirname, "client/dist")));
+  app.get("*", (req, res) => {
+    res.sendFile(path.resolve(__dirname, "client", "dist", "index.html"));
+  });
+}
 
 //Error
 app.use((err, req, res, next) => {

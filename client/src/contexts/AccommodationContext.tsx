@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, ReactNode, useEffect, useMemo } from 'react';
+const API_URL = import.meta.env.VITE_API_URL;
 
 export interface Accommodation {
   id: string;
@@ -48,7 +49,7 @@ export const AccommodationProvider = ({ children }: { children: ReactNode }) => 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/properties"); // <-- your backend route
+        const response = await fetch(`${API_URL}/api/properties`); // <-- backend route
         const data: Accommodation[] = await response.json();
         setAccommodations(data);
       } catch (error) {

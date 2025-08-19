@@ -5,6 +5,7 @@ import { useToast } from "@/hooks/use-toast";
 import { Trash2 } from "lucide-react";
 import { Home, Upload, MapPin, IndianRupee, Users, Wifi, Car, UtensilsCrossed, Clock, Shield, Star, CheckCircle } from "lucide-react";
 
+const API_URL = import.meta.env.VITE_API_URL;
 export interface propertyFormData {
   id: string;
   title: string;
@@ -208,7 +209,7 @@ export const usePropertyListing = () => {
       console.log("Payload being sent to backend:", payload);
 
       //Send to Back-end
-      const response = await fetch("http://localhost:5000/api/properties", {
+      const response = await fetch(`${API_URL}/api/properties`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
