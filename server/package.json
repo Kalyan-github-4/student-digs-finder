@@ -6,21 +6,20 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon server.js",
-    "start": "node server.js" 
+    "start": "node server.js"
   },
-  "proxy": "http://localhost:5000",
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {
-    "body-parser": "^2.2.0",
-    "cors": "^2.8.5",
-    "dotenv": "^17.2.1",
-    "express": "^5.1.0",
-    "morgan": "^1.10.1",
-    "pg": "^8.16.3"
-  },
+  "express": "^4.19.2",
+  "cors": "^2.8.5",
+  "dotenv": "^17.2.1",
+  "morgan": "^1.10.1",
+  "pg": "^8.16.3",
+  "body-parser": "^1.20.3"
+},
   "devDependencies": {
     "@types/cors": "^2.8.19",
     "nodemon": "^3.1.10"
