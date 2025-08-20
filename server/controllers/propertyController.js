@@ -127,11 +127,11 @@ const getProperties = async (req, res) => {
       created_at: p.created_at,
       updated_at: p.updated_at
     }));
-
     res.json(properties);
+    console.log("Raw DB rows:", result.rows); // <- log raw DB response
   } catch (error) {
     console.error("Error fetching properties:", error);
-    res.status(500).json({ error: "Failed to fetch properties" });
+     res.status(500).json({ error: error.message, details: error.stack });
   }
 };
 
