@@ -211,9 +211,6 @@ export const usePropertyListing = () => {
       //Send to Back-end
 
       const response = await fetch(`${API_URL}/api/properties`, {
-
-      const response = await fetch("https://student-digs-finder.onrender.com/api/properties", {
-
         method: "POST",
         headers: {
           "Content-Type": "application/json"
