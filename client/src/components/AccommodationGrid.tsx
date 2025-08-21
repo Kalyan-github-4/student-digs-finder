@@ -45,13 +45,12 @@ const AccommodationGrid = () => {
           <div className="md:w-1/2 flex flex-col md:flex-row md:items-center gap-1 md:justify-end">
             <Select>
               <SelectTrigger className="h-8 text-sm w-[160px]">
-                <SelectValue placeholder="Recommended" />
+                <SelectValue placeholder="Category" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all" className="px-7">Price: Low to High</SelectItem>
-                <SelectItem value="mess" className="px-7">Price: High to Low</SelectItem>
-                <SelectItem value="room" className="px-7">Highest Rated</SelectItem>
-                <SelectItem value="hostel" className="px-7">Closest Distance</SelectItem>
+                <SelectItem value="all" className="px-7">Men</SelectItem>
+                <SelectItem value="mess" className="px-7">Women</SelectItem>
+                <SelectItem value="room" className="px-7">Both</SelectItem>
               </SelectContent>
             </Select>
           </div>
