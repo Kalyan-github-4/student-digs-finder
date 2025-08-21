@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Menu, X, Home, MapPin, User, Bell } from "lucide-react";
+import { Menu, X, Home, MapPin, User, Bell, Globe  } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 
 const Header = () => {
@@ -52,7 +52,7 @@ const Header = () => {
           {/* Desktop Actions */}
           <div className="hidden md:flex items-center space-x-4">
             <Button variant="ghost" size="sm">
-              <Bell className="h-4 w-4" />
+              <Globe  className="h-4 w-4" />
             </Button>
             <Button variant="outline" size="sm">
               Log In
