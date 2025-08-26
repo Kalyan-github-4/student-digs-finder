@@ -13,11 +13,11 @@ const Header = () => {
     <header className="bg-card/95 backdrop-blur-sm border-b border-border sticky top-0 z-50">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
-          
+
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-2">
             {/* Icon with gradient background */}
-            <Home className="w-8 h-8 text-emerald-500 bg-emerald-500/10 rounded-full p-1.5" />
+            <Home className="w-10 h-10 text-emerald-500 bg-emerald-500/10 rounded-full p-1.5" />
 
             {/* Brand Name with gradient text */}
             <span className="text-2xl font-extrabold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent tracking-wide">
