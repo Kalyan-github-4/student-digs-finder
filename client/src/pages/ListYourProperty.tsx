@@ -10,7 +10,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { useState, useRef } from "react";
 import { Accommodation } from "@/contexts/AccommodationContext";
-import {useAccommodation} from "@/hooks/useAccommodation";
+import { useAccommodation } from "@/hooks/useAccommodation";
 import { useToast } from "@/hooks/use-toast";
 import { Trash2, Loader2 } from "lucide-react";
 import { usePropertyListing } from "@/hooks/usePropertyListing";
@@ -133,6 +133,7 @@ const ListYourProperty = () => {
                       </Select>
                     </div>
 
+                    {/* Description */}
                     <div>
                       <Label htmlFor="description">Description *</Label>
                       <Textarea
@@ -241,7 +242,7 @@ const ListYourProperty = () => {
                           className="pl-10"
                           type="number"
                           value={formData.capacity}
-                          onChange={(e) => setFormData({ ...formData, capacity:( e.target.value )})}
+                          onChange={(e) => setFormData({ ...formData, capacity: (e.target.value) })}
                           required
                         />
                       </div>
