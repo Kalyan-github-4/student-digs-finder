@@ -21,7 +21,7 @@ const Header = () => {
 
             {/* Brand Name with gradient text */}
             <span className="text-2xl font-extrabold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent tracking-wide">
-              easyPG
+              EasyPG
             </span>
           </Link>
 
